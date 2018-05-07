@@ -1,33 +1,20 @@
 local version = 0.1
+local cpml = require("lib/cpml")
 require("util")
 
-position = {
-	x = 0,
-	y = 0,
-	z = 0
-}
-
-destination = {
-	x = 0,
-	y = 0,
-	z = 0,
-	distance = 0
-}
-
 function love.load()
-	destination = {
-		x = 10,
-		y = 10,
-		z = 10
-	}
+	position = cpml.vec3.new(0, 0, 0)
+	destination = cpml.vec3.new(10, 10, 10)
+	distance = 0
 end
 
 function love.draw()
-	love.graphics.printf("Lampyrid v" .. version, 5, 5, 100)
-	love.graphics.printf("Distance: " .. destination.distance, 5, 20, 100)
+	love.graphics.printf("Lampyrid v" .. version, 5, 10, 100)
+	love.graphics.printf("Position: " ..  cpml.vec3.to_string(position) , 5, 25, 300)
+	love.graphics.printf("destination: " ..  cpml.vec3.to_string(destination) , 5, 40, 300)
+	love.graphics.printf("Distance: " ..  distance, 5, 55, 300)
 end
 
 function love.update()
-	destination.distance = math.dist(position.x, position.y, position.z, destination.x, destination.y, destination.z)
-	destination.distance = math.round(destination.distance)
+	distance = cpml.vec3.dist(position, destination)
 end
