@@ -3,8 +3,8 @@ local cpml = require("lib/cpml")
 require("util")
 
 function love.load()
-	position = cpml.vec3.new(0, 300, 1)
-	destination = cpml.vec3.new(700, 500, 30)
+	position = cpml.vec3.new(0, 0, 0)
+	destination = cpml.vec3.new(0, 0, 0)
 	distance = 0
 	travel_time = 0
 	speed = 10
@@ -19,10 +19,6 @@ function love.draw()
 	love.graphics.printf("Destination: " ..  destination:to_string() , 5, 40, 600)
 	love.graphics.printf("Distance: " ..  distance, 5, 55, 600)
 	love.graphics.printf("ETA: " .. eta, 5, 70, 600)
-
-	-- visualize travel
-	love.graphics.circle( "fill", position:unpack())
-	love.graphics.circle( "fill", destination:unpack())
 end
 
 function love.update(dt)
