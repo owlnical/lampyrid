@@ -67,11 +67,19 @@ function love.keypressed(key)
             -- remove the last UTF-8 character.
             console.command = string.sub(console.command, 1, byteoffset - 1)
         end
-	end
-
-	-- Add executed command to history
-	if key == "return" then
-		console.history = console.history .. "\n" .. console.prefix .. console.command
-		console.command = ""
+	elseif key == "return" then
+		run(console.command)
     end
+end
+
+-- Add executed command to history
+function run(command)
+	local output = ""
+	if command == "q" then
+		love.event.quit()
+	else
+		output = "\ncommand not found"
+	end
+	console.history = console.history .. "\n" .. console.prefix .. command .. output
+	console.command = ""
 end
