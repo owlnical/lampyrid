@@ -1,5 +1,6 @@
 local version = 0.1
 local cpml = require("lib/cpml")
+local utf8 = require("utf8")
 require("util")
 
 function love.load()
@@ -10,6 +11,12 @@ function love.load()
 	speed = 10
 	traveling = true
 	eta = 0
+	console = {
+		history = "$ Welcome to Lampyrid v" .. version,
+		prefix = "$ ",
+		command = "",
+		suffix = "▯"
+	}
 end
 
 function love.draw()
@@ -19,6 +26,8 @@ function love.draw()
 	love.graphics.printf("Destination: " ..  destination:to_string() , 5, 40, 600)
 	love.graphics.printf("Distance: " ..  distance, 5, 55, 600)
 	love.graphics.printf("ETA: " .. eta, 5, 70, 600)
+
+	love.graphics.printf(console.history .. "\n" .. console.prefix .. console.command .. console.suffix, 200, 200, 600)
 end
 
 function love.update(dt)
@@ -41,4 +50,28 @@ function travel(dt)
 		eta = 0
 		position = destination:clone()
 	end
+end
+
+function love.textinput(text)
+	console.command = console.command .. text
+end
+
+function love.keypressed(key)
+	-- Erase UTF-8 characters
+	-- From: https://love2d.org/wiki/love.textinput
+    if key == "backspace" then
+        -- get the byte offset to the last UTF-8 character in the string.
+        local byteoffset = utf8.offset(console.command, -1)
+
+        if byteoffset then
+            -- remove the last UTF-8 character.
+            console.command = string.sub(console.command, 1, byteoffset - 1)
+        end
+	end
+
+	-- Add executed command to history
+	if key == "return" then
+		console.history = console.history .. "\n" .. console.prefix .. console.command
+		console.command = ""
+    end
 end
