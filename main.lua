@@ -1,6 +1,7 @@
 local version = 0.1
 local cpml = require("lib/cpml")
 local utf8 = require("utf8")
+local moonshine = require 'lib/moonshine'
 require("util")
 
 function love.load()
@@ -19,6 +20,19 @@ function love.load()
 		command = "",
 		suffix = "▯"
 	}
+	font = love.graphics.newFont(20)
+	love.graphics.setFont(font)
+
+	-- Shaders
+	monitor = moonshine(moonshine.effects.crt)
+		.chain(moonshine.effects.scanlines)
+		.chain(moonshine.effects.vignette)
+		.chain(moonshine.effects.glow)
+	monitor.parameters = {
+		crt = {distortionFactor = {1.06, 1.065}, x = 10, y = 50},
+		scanlines = { opacity = 0.1},
+		vignette = { opacity = 0.1}
+	}
 end
 
 function love.draw()
@@ -29,7 +43,13 @@ function love.draw()
 	love.graphics.printf("Distance: " ..  distance, 5, 55, 600)
 	love.graphics.printf("ETA: " .. eta, 5, 70, 600)
 
-	love.graphics.printf(console.history .. "\n" .. console.prefix .. console.command .. console.suffix, 200, 200, 600)
+	-- Draw monitor with shader effects
+	monitor(function()
+		love.graphics.setColor(0.1, 0.1, 0.1, 1)
+		love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
+		love.graphics.setColor(1, 1, 1)
+	  love.graphics.printf(terminal.history .. terminal.prefix .. terminal.command .. terminal.suffix, 20, 20, love.graphics.getWidth()-50)
+    end)
 end
 
 function love.update(dt)
