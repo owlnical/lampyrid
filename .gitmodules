@@ -4,3 +4,12 @@
 [submodule "lib/moonshine"]
 	path = lib/moonshine
 	url = https://github.com/vrld/moonshine
+[submodule "lib/lua-stdlib"]
+	path = lib/lua-stdlib
+	url = https://github.com/lua-stdlib/lua-stdlib
+[submodule "lib/normalize"]
+	path = lib/normalize
+	url = https://github.com/lua-stdlib/normalize
+[submodule "lib/_debug"]
+	path = lib/_debug
+	url = https://github.com/lua-stdlib/_debug
