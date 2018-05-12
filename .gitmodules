@@ -13,3 +13,6 @@
 [submodule "lib/_debug"]
 	path = lib/_debug
 	url = https://github.com/lua-stdlib/_debug
+[submodule "lib/optparse"]
+	path = lib/optparse
+	url = https://github.com/gvvaughan/optparse/
