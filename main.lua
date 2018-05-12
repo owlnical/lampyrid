@@ -5,6 +5,7 @@ local moonshine = require 'lib/moonshine'
 require("util")
 
 function love.load()
+	-- Navigation
 	position = cpml.vec3.new(0, 0, 0)
 	destination = cpml.vec3.new(0, 0, 0)
 	distance = 0
@@ -75,8 +76,7 @@ function love.textinput(text)
 end
 
 function love.keypressed(key)
-	-- Erase UTF-8 characters
-	-- From: https://love2d.org/wiki/love.textinput
+	-- Erase UTF-8 characters (https://love2d.org/wiki/love.textinput)
     if key == "backspace" then
         -- get the byte offset to the last UTF-8 character in the string.
         local byteoffset = utf8.offset(terminal.command, -1)
