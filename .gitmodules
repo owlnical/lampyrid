@@ -1,3 +1,6 @@
 [submodule "lib/cpml"]
 	path = lib/cpml
 	url = https://github.com/excessive/cpml
+[submodule "lib/moonshine"]
+	path = lib/moonshine
+	url = https://github.com/vrld/moonshine
