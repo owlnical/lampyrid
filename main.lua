@@ -11,8 +11,10 @@ function love.load()
 	speed = 10
 	traveling = true
 	eta = 0
-	console = {
-		history = "$ Welcome to Lampyrid v" .. version,
+
+	-- Terminal
+	terminal = {
+		history = "$ Welcome to Lampyrid v" .. version .. "\n",
 		prefix = "$ ",
 		command = "",
 		suffix = "▯"
@@ -52,8 +54,9 @@ function travel(dt)
 	end
 end
 
+-- Add input to the terminal
 function love.textinput(text)
-	console.command = console.command .. text
+	terminal.command = terminal.command .. text
 end
 
 function love.keypressed(key)
@@ -61,25 +64,25 @@ function love.keypressed(key)
 	-- From: https://love2d.org/wiki/love.textinput
     if key == "backspace" then
         -- get the byte offset to the last UTF-8 character in the string.
-        local byteoffset = utf8.offset(console.command, -1)
+        local byteoffset = utf8.offset(terminal.command, -1)
 
         if byteoffset then
             -- remove the last UTF-8 character.
-            console.command = string.sub(console.command, 1, byteoffset - 1)
+            terminal.command = string.sub(terminal.command, 1, byteoffset - 1)
         end
 	elseif key == "return" then
-		run(console.command)
+		run(terminal.command)
     end
 end
 
--- Add executed command to history
+-- Handle commands
 function run(command)
 	local output = ""
 	if command == "q" then
 		love.event.quit()
 	else
-		output = "\ncommand not found"
+		output = "\ncommand not found\n"
 	end
-	console.history = console.history .. "\n" .. console.prefix .. command .. output
-	console.command = ""
+	terminal.history = terminal.history .. terminal.prefix .. command .. output
+	terminal.command = ""
 end
