@@ -36,12 +36,7 @@ function love.load()
 end
 
 function love.draw()
-	-- status
-	love.graphics.printf("Lampyrid v" .. version, 5, 10, 100)
-	love.graphics.printf("Position: " ..  position:to_string(), 5, 25, 600)
-	love.graphics.printf("Destination: " ..  destination:to_string() , 5, 40, 600)
-	love.graphics.printf("Distance: " ..  distance, 5, 55, 600)
-	love.graphics.printf("ETA: " .. eta, 5, 70, 600)
+	love.graphics.setBackgroundColor(0,0,0)
 
 	-- Draw monitor with shader effects
 	monitor(function()
@@ -100,6 +95,20 @@ function run(command)
 	local output = ""
 	if command == "q" then
 		love.event.quit()
+	elseif command == "clear" then
+		terminal.history = ""
+		terminal.command = ""
+		return
+	elseif command == "version" then
+		output = "\nLampyrid v" .. version .. "\n"
+	elseif command == "position" then
+		output = "\n" ..  position:to_string() .. "\n"
+	elseif command == "destination" then
+		output = "\n" ..  destination:to_string() .. "\n"
+	elseif command == "eta" then
+		output = "\n" .. eta .. " minutes\n"
+	elseif command == "distance" then
+		output = "\n" .. distance .. " space miles\n"
 	else
 		output = "\ncommand not found\n"
 	end
