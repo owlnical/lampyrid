@@ -19,9 +19,9 @@ function love.load()
 		history = "$ Welcome to Lampyrid v" .. version .. "\n",
 		prefix = "$ ",
 		command = "",
-		suffix = "▯"
+		suffix = "█"
 	}
-	font = love.graphics.newFont(20)
+	font = love.graphics.newFont("Hack-Regular.ttf", 20)
 	love.graphics.setFont(font)
 
 	-- Shaders
