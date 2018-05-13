@@ -119,3 +119,7 @@ function run(input)
 	terminal.history = terminal.history .. terminal.prefix .. input .. output
 	terminal.command = ""
 end
+
+function love.threaderror(thread, errorstr)
+	print("thread error: " .. errorstr) -- Will print error instead of stopping the love
+end
