@@ -2,6 +2,7 @@ local version = 0.1
 local cpml = require("lib/cpml")
 local utf8 = require("utf8")
 local moonshine = require 'lib/moonshine'
+local string = require "std/string"
 require("util")
 
 function love.load()
@@ -91,8 +92,11 @@ function love.keypressed(key)
 end
 
 -- Handle commands
-function run(command)
+function run(input)
 	local output = ""
+	local args = string.split(input)
+	local command = args[1]
+	table.remove(args, 1)
 	if command == "q" then
 		love.event.quit()
 	elseif command == "clear" then
@@ -112,6 +116,6 @@ function run(command)
 	else
 		output = "\ncommand not found\n"
 	end
-	terminal.history = terminal.history .. terminal.prefix .. command .. output
+	terminal.history = terminal.history .. terminal.prefix .. input .. output
 	terminal.command = ""
 end
