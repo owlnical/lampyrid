@@ -121,30 +121,6 @@ function love.keypressed(key)
     end
 end
 
--- Handle commands
-function run(input)
-	if command == "q" then
-		love.event.quit()
-	elseif command == "clear" then
-		terminal.history = ""
-		terminal.command = ""
-		return
-	elseif command == "version" then
-		output = "\nLampyrid v" .. version .. "\n"
-	elseif command == "position" then
-		output = "\n" ..  position:to_string() .. "\n"
-	elseif command == "destination" then
-		output = "\n" ..  destination:to_string() .. "\n"
-	elseif command == "eta" then
-		output = "\n" .. eta .. " minutes\n"
-	elseif command == "distance" then
-		output = "\n" .. distance .. " space miles\n"
-	else
-		output = "\ncommand not found\n"
-	end
-	terminal:run(input)
-end
-
 function love.threaderror(thread, errorstr)
 	print("thread error: " .. errorstr) -- Will print error instead of stopping the love
 end
