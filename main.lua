@@ -47,8 +47,43 @@ function love.draw()
 		love.graphics.setColor(0.1, 0.1, 0.1, 1)
 		love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
 		love.graphics.setColor(1, 1, 1)
-	  love.graphics.printf(terminal.history .. terminal.prefix .. terminal.command .. terminal.suffix, 20, 20, love.graphics.getWidth()-50)
+	  love.graphics.printf(terminal.text .. terminal.prefix .. terminal.input .. terminal.suffix, 20, 20, love.graphics.getWidth()-50)
     end)
+end
+
+-- Erase UTF-8 characters (https://love2d.org/wiki/love.textinput)
+function terminal:backspace()
+	local byteoffset = utf8.offset(self.input, -1)
+	if byteoffset then
+		self.input = string.sub(self.input, 1, byteoffset - 1)
+	end
+end
+
+function terminal:print(text)
+	self.text = self.text .. text
+end
+
+function terminal:splitInput(input)
+	local args = string.split(input or self.input)
+	local command = args[1]
+	self.text = self.text .. self.prefix .. self.input .. "\n"
+	table.remove(args, 1)
+	return command, args
+end
+
+function terminal:run()
+	local command, arg = terminal:splitInput()
+	if command ~= "" then
+		if command == "clear" then
+			self.text = ""
+		elseif command == "exit" then
+			love.event.quit()
+		else
+			terminal:print("Command not found\n")
+		end
+		self.history[#self.history+1] = self.input
+	end
+	self.input = ""
 end
 
 function love.update(dt)
@@ -75,30 +110,19 @@ end
 
 -- Add input to the terminal
 function love.textinput(text)
-	terminal.command = terminal.command .. text
+	terminal.input = terminal.input .. text
 end
 
 function love.keypressed(key)
-	-- Erase UTF-8 characters (https://love2d.org/wiki/love.textinput)
     if key == "backspace" then
-        -- get the byte offset to the last UTF-8 character in the string.
-        local byteoffset = utf8.offset(terminal.command, -1)
-
-        if byteoffset then
-            -- remove the last UTF-8 character.
-            terminal.command = string.sub(terminal.command, 1, byteoffset - 1)
-        end
+		terminal:backspace()
 	elseif key == "return" then
-		run(terminal.command)
+		terminal:run()
     end
 end
 
 -- Handle commands
 function run(input)
-	local output = ""
-	local args = string.split(input)
-	local command = args[1]
-	table.remove(args, 1)
 	if command == "q" then
 		love.event.quit()
 	elseif command == "clear" then
@@ -118,8 +142,7 @@ function run(input)
 	else
 		output = "\ncommand not found\n"
 	end
-	terminal.history = terminal.history .. terminal.prefix .. input .. output
-	terminal.command = ""
+	terminal:run(input)
 end
 
 function love.threaderror(thread, errorstr)
