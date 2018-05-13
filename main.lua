@@ -3,6 +3,15 @@ local cpml = require("lib/cpml")
 local utf8 = require("utf8")
 local moonshine = require 'lib/moonshine'
 local string = require "std/string"
+-- Terminal
+terminal = {
+	text = "$ Welcome to Lampyrid v" .. version .. "\n",
+	prefix = "$ ",
+	input = "",
+	suffix = "█",
+	history = {},
+	scrollback = 0
+}
 require("util")
 
 function love.load()
@@ -15,13 +24,6 @@ function love.load()
 	traveling = true
 	eta = 0
 
-	-- Terminal
-	terminal = {
-		history = "$ Welcome to Lampyrid v" .. version .. "\n",
-		prefix = "$ ",
-		command = "",
-		suffix = "█"
-	}
 	font = love.graphics.newFont("Hack-Regular.ttf", 20)
 	love.graphics.setFont(font)
 
