@@ -80,7 +80,7 @@ function Terminal:split(input)
 end
 
 -- Add the current command to the history
-function Terminal:updateHistory()
+function Terminal:saveCommand()
 	self.command[#self.command].original = self:getCommand()
 	self.command[#self.command].edited = self:getCommand()
 
@@ -109,7 +109,7 @@ function Terminal:run()
 		else
 			self:print("Command not found\n")
 		end
-		self:updateHistory()
+		self:saveCommand()
 		self:newCommand()
 	end
 end
