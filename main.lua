@@ -9,9 +9,10 @@ terminal = {
 	prefix = "$ ",
 	input = "",
 	suffix = "█",
-	history = {},
-	scrollback = 0
+	history = {""},
+	current = 1
 }
+
 require("util")
 
 function love.load()
@@ -59,10 +60,23 @@ function terminal:backspace()
 	end
 end
 
+-- Move up or down in terminal history
+function terminal:move(direction)
+	self.history[self.current] = self.input
+	if direction == "up" and self.current > 1 then
+			self.current = self.current - 1
+	elseif direction == "down" and self.current < #self.history then
+			self.current = self.current + 1
+	end
+	self.input = "" .. self.history[self.current]
+end
+
+-- Print text to terminal
 function terminal:print(text)
 	self.text = self.text .. text
 end
 
+-- Split input string into command and args
 function terminal:splitInput(input)
 	local args = string.split(input or self.input)
 	local command = args[1]
@@ -71,19 +85,25 @@ function terminal:splitInput(input)
 	return command, args
 end
 
+-- Add current input to history and and clear input
+function terminal:commandToHistory()
+	self.history[#self.history] = self.input
+	self.history[#self.history + 1] = ""
+	self.input = ""
+	self.current = #self.history
+end
+
+-- Run current input
 function terminal:run()
 	local command, arg = terminal:splitInput()
 	if command ~= "" then
-		if command == "clear" then
-			self.text = ""
-		elseif command == "exit" then
-			love.event.quit()
+		if false then
+			-- find commands
 		else
 			terminal:print("Command not found\n")
 		end
-		self.history[#self.history+1] = self.input
+		terminal:commandToHistory()
 	end
-	self.input = ""
 end
 
 function love.update(dt)
@@ -118,6 +138,8 @@ function love.keypressed(key)
 		terminal:backspace()
 	elseif key == "return" then
 		terminal:run()
+	elseif key == "up" or key == "down" then
+		terminal:move(key)
     end
 end
 
