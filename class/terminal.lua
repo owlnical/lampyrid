@@ -31,7 +31,7 @@ function Terminal:move(direction)
 	elseif direction == "down" and self.history.view < #self.history then
 			self.history.view = self.history.view + 1
 	end
-	self.command = "" .. self.history[self.history.view]
+	self.command = self.history[self.history.view]
 end
 
 -- Print text to Terminal
