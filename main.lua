@@ -43,7 +43,7 @@ function love.draw()
 		love.graphics.setColor(0.1, 0.1, 0.1, 1)
 		love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
 		love.graphics.setColor(1, 1, 1)
-	  love.graphics.printf(terminal.text .. terminal.prefix .. terminal.input .. terminal.suffix, 20, 20, love.graphics.getWidth()-50)
+	  love.graphics.printf(terminal.text .. terminal.prefix .. terminal.command .. terminal.suffix, 20, 20, love.graphics.getWidth()-50)
     end)
 end
 
@@ -71,7 +71,7 @@ end
 
 -- Add input to the terminal
 function love.textinput(text)
-	terminal.input = terminal.input .. text
+	terminal.command = terminal.command .. text
 end
 
 function love.keypressed(key)
