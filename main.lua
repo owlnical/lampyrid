@@ -79,7 +79,7 @@ function love.keypressed(key)
 		terminal:backspace()
 	elseif key == "return" then
 		terminal:run()
-	elseif key == "up" or key == "down" then
+	elseif key == "up" or key == "down" or key == "left" or key == "right" then
 		terminal:move(key)
     end
 end
