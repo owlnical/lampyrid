@@ -5,38 +5,47 @@ local Terminal = class("Terminal")
 
 
 function Terminal:initialize(text, prefix, suffix)
-	self.history = text or ""				-- All previous input/output as a single string
-	self.prefix = prefix or "$ "		-- Characters beforce the command
-	self.suffix = suffix or "█"			-- Characters after the command
+	-- All previous output and executed commands in a single string
+	self.history = text or ""
 
+	-- Characters before input
+	self.prefix = prefix or "$ "
 
-	--[[
-		Store current and previous commands in a single table
-		edited:		The current string
-		original:	String when executed
-	--]]
-	self.command = {{edited = "", original = ""}}
+	-- Characters after input
+	self.suffix = suffix or "█"
+
+	-- All commands
+	self.command = {}
+
+	self.command[1] = {
+		edited = ""
+	}
 
 	-- The currently viewed command
 	self.current = 1
 end
 
+-- Return the text currently showed in the terminal
 function Terminal:getCommand()
 	return self.command[self.current].edited
 end
 
+-- Set the text currently showed in the terminal
 function Terminal:setCommand(text)
 	self.command[self.current].edited = text
 end
 
+-- Append text to the text currently showed in the terminal
 function Terminal:appendCommand(text)
 	self:setCommand(self:getCommand() .. text)
 end
 
+-- Set the terminal history
 function Terminal:setHistory(text)
 	self.history = text
 end
 
+-- Get the terminal history
 function Terminal:getHistory(text)
 	return self.history
 end
