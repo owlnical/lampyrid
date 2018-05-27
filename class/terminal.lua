@@ -18,7 +18,7 @@ function Terminal:initialize(text, prefix, suffix)
 	self.command = {}
 
 	self.command[1] = {
-		edited = ""
+		text = ""
 	}
 
 	-- The currently viewed command
@@ -26,18 +26,18 @@ function Terminal:initialize(text, prefix, suffix)
 end
 
 -- Return the text currently showed in the terminal
-function Terminal:getCommand()
-	return self.command[self.current].edited
+function Terminal:getInput()
+	return self.command[self.current].text
 end
 
 -- Set the text currently showed in the terminal
-function Terminal:setCommand(text)
-	self.command[self.current].edited = text
+function Terminal:setInput(text)
+	self.command[self.current].text = text
 end
 
 -- Append text to the text currently showed in the terminal
-function Terminal:appendCommand(text)
-	self:setCommand(self:getCommand() .. text)
+function Terminal:appendInput(text)
+	self:setInput(self:getInput() .. text)
 end
 
 -- Set the terminal history
@@ -55,14 +55,14 @@ function Terminal:appendHistory(text)
 end
 
 function Terminal:getContent()
-	return self.history .. self.prefix .. terminal:getCommand() .. self.suffix
+	return self.history .. self.prefix .. terminal:getInput() .. self.suffix
 end
 
 -- Erase UTF-8 characters (https://love2d.org/wiki/love.textinput)
 function Terminal:backspace()
-	local byteoffset = utf8.offset(self:getCommand(), -1)
+	local byteoffset = utf8.offset(self:getInput(), -1)
 	if byteoffset then
-		self:setCommand(string.sub(self:getCommand(), 1, byteoffset - 1))
+		self:setInput(string.sub(self:getInput(), 1, byteoffset - 1))
 	end
 end
 
@@ -75,14 +75,9 @@ function Terminal:move(direction)
 	end
 end
 
--- Print text to Terminal
-function Terminal:print(text)
-	self.history = self.history .. text
-end
-
 -- Split input string into command and args
-function Terminal:split(input)
-	local args = string.split(input or self:getCommand())
+function Terminal:splitInput(text)
+	local args = string.split(text or self:getInput())
 	local command = args[1]
 	table.remove(args, 1)
 	return command, args
@@ -90,33 +85,33 @@ end
 
 -- Add the current command to the history
 function Terminal:saveCommand()
-	self.command[#self.command].original = self:getCommand()
-	self.command[#self.command].edited = self:getCommand()
+	self.command[#self.command].original = self:getInput()
+	self.command[#self.command].text = self:getInput()
 
 	--[[
-		If this was a partially edited previous command
+		If this was a partially text previous command
 		Restore it to it's original string.
 	--]]
 	if self.current < #self.command then
-		self.command[self.current].edited = self.command[self.current].original
+		self.command[self.current].text = self.command[self.current].original
 	end
 end
 
 -- Add a new command to the bottom of the history table
 function Terminal:newCommand()
-	self.command[#self.command + 1] = {edited = "", original = ""}
+	self.command[#self.command + 1] = {text = "", original = ""}
 	self.current = #self.command
 end
 
 -- Run current input
 function Terminal:run()
-	local command, arg = self:split()
-	self:appendHistory(self.prefix .. self:getCommand() .. "\n")
+	local command, arg = self:splitInput()
+	self:appendHistory(self.prefix .. self:getInput() .. "\n")
 	if command ~= "" then
 		if false then
 			-- find commands
 		else
-			self:print("Command not found\n")
+			self:appendHistory("Command not found\n")
 		end
 		self:saveCommand()
 		self:newCommand()

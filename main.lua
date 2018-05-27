@@ -71,7 +71,7 @@ end
 
 -- Add input to the terminal
 function love.textinput(text)
-	terminal:appendCommand(text)
+	terminal:appendInput(text)
 end
 
 function love.keypressed(key)
