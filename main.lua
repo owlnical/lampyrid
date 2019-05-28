@@ -6,8 +6,10 @@ local string = require "std/string"
 local class = require "lib/middleclass"
 local Terminal = require "class/terminal"
 
-
 function love.load()
+  local data = love.thread.newThread("data.lua")
+  data:start()
+
 	-- Navigation
 	position = cpml.vec3.new(0, 0, 0)
 	destination = cpml.vec3.new(0, 0, 0)
