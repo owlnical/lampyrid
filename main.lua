@@ -3,7 +3,7 @@ local cpml = require("lib/cpml")
 local utf8 = require("utf8")
 local moonshine = require 'lib/moonshine'
 local string = require "std/string"
-local class = require "lib/middleclass/middleclass"
+local class = require "lib/middleclass"
 local Terminal = require "class/terminal"
 
 terminal = Terminal:new("$ Welcome to Lampyrid v" .. version .. "\n")

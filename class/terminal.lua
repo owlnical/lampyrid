@@ -1,4 +1,4 @@
-local class = require "lib/middleclass/middleclass"
+local class = require "lib/middleclass"
 local string = require "std/string"
 local utf8 = require "utf8"
 require "channel"
