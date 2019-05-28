@@ -8,8 +8,6 @@ local Terminal = require "class/terminal"
 
 terminal = Terminal:new("$ Welcome to Lampyrid v" .. version .. "\n")
 
-require("util")
-
 function love.load()
 	-- Navigation
 	position = cpml.vec3.new(0, 0, 0)
