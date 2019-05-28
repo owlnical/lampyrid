@@ -58,6 +58,10 @@ function Terminal:getContent()
 	return self.history .. self.prefix .. terminal:getInput() .. self.suffix
 end
 
+function Terminal:clear()
+  self.history = ""
+end
+
 -- Erase UTF-8 characters (https://love2d.org/wiki/love.textinput)
 function Terminal:backspace()
 	local byteoffset = utf8.offset(self:getInput(), -1)
@@ -108,7 +112,9 @@ function Terminal:run()
 	local command, arg = self:splitInput()
   local bin = "bin/" .. command .. ".lua"
 	self:appendHistory(self.prefix .. self:getInput() .. "\n")
-	if love.filesystem.getInfo(bin) then
+  if command == "clear" then
+    self:clear()
+	elseif love.filesystem.getInfo(bin) then
       thread = love.thread.newThread(bin)
       thread:start()
       channel.input:push(arg)

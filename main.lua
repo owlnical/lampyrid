@@ -79,6 +79,8 @@ function love.keypressed(key)
 		terminal:run()
 	elseif key == "up" or key == "down" or key == "left" or key == "right" then
 		terminal:move(key)
+  elseif key=="l" and love.keyboard.isDown("lctrl","rctrl") then
+    terminal:clear()
     end
 end
 
