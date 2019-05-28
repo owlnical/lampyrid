@@ -16,6 +16,3 @@
 [submodule "lib/optparse"]
 	path = lib/optparse
 	url = https://github.com/gvvaughan/optparse/
-[submodule "lib/middleclass"]
-	path = lib/middleclass
-	url = https://github.com/kikito/middleclass
