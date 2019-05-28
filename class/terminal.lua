@@ -4,7 +4,7 @@ local utf8 = require "utf8"
 require "channel"
 local Terminal = class("Terminal")
 
-function Terminal:initialize(text, prefix, suffix)
+function Terminal:initialize(text, fontsize, prefix, suffix)
 	-- All previous output and executed commands in a single string
 	self.history = text or ""
 
@@ -13,6 +13,9 @@ function Terminal:initialize(text, prefix, suffix)
 
 	-- Characters after input
 	self.suffix = suffix or "█"
+
+  -- We need max lines to clear the terminal when it's "full"
+  self.maxlines = love.graphics.getHeight() / fontsize * 0.75
 
 	-- All commands
 	self.command = {}
@@ -50,7 +53,20 @@ function Terminal:getHistory(text)
 	return self.history
 end
 
+-- Add to current terminal text
+-- Remove top rows when the terminal is "full"
 function Terminal:appendHistory(text)
+  if select(2, self.history:gsub('\n', '\n')) > self.maxlines then
+    local newhistory = ""
+    self.history = string.split(self.history, "\n")
+    table.remove(self.history, 1)
+    table.remove(self.history, #self.history)
+    for k, v in pairs(self.history) do
+      newhistory = newhistory .. v .. "\n"
+    end
+    self.history = newhistory
+  end
+
 	self.history = self.history .. text
 end
 

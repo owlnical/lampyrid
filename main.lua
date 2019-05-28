@@ -6,7 +6,6 @@ local string = require "std/string"
 local class = require "lib/middleclass"
 local Terminal = require "class/terminal"
 
-terminal = Terminal:new("$ Welcome to Lampyrid v" .. version .. "\n")
 
 function love.load()
 	-- Navigation
@@ -18,7 +17,9 @@ function love.load()
 	traveling = true
 	eta = 0
 
-	font = love.graphics.newFont("Hack-Regular.ttf", 20)
+  local fontsize = 20
+  terminal = Terminal:new("$ Welcome to Lampyrid v" .. version .. "\n", fontsize)
+	font = love.graphics.newFont("Hack-Regular.ttf", fontsize)
 	love.graphics.setFont(font)
 
 	-- Shaders
