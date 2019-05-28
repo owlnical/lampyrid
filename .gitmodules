@@ -1,6 +1,3 @@
-[submodule "lib/moonshine"]
-	path = lib/moonshine
-	url = https://github.com/vrld/moonshine
 [submodule "lib/lua-stdlib"]
 	path = lib/lua-stdlib
 	url = https://github.com/lua-stdlib/lua-stdlib
