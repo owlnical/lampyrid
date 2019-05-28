@@ -57,14 +57,9 @@ end
 -- Remove top rows when the terminal is "full"
 function Terminal:appendHistory(text)
   if select(2, self.history:gsub('\n', '\n')) > self.maxlines then
-    local newhistory = ""
-    self.history = string.split(self.history, "\n")
-    table.remove(self.history, 1)
-    table.remove(self.history, #self.history)
-    for k, v in pairs(self.history) do
-      newhistory = newhistory .. v .. "\n"
-    end
-    self.history = newhistory
+    local t = string.split(self.history, "\n")
+    table.remove(t, 1)
+    self.history = table.concat(t, "\n")
   end
 
 	self.history = self.history .. text
