@@ -1,8 +1,8 @@
 local class = require "lib/middleclass/middleclass"
 local string = require "std/string"
 local utf8 = require "utf8"
+require "channel"
 local Terminal = class("Terminal")
-
 
 function Terminal:initialize(text, prefix, suffix)
 	-- All previous output and executed commands in a single string
@@ -106,16 +106,19 @@ end
 -- Run current input
 function Terminal:run()
 	local command, arg = self:splitInput()
+  local bin = "bin/" .. command .. ".lua"
 	self:appendHistory(self.prefix .. self:getInput() .. "\n")
-	if command ~= "" then
-		if false then
-			-- find commands
-		else
-			self:appendHistory("Command not found\n")
-		end
-		self:saveCommand()
-		self:newCommand()
+	if love.filesystem.getInfo(bin) then
+      thread = love.thread.newThread(bin)
+      thread:start()
+      channel.input:push(arg)
+      self:appendHistory(channel.output:demand())
+      channel.input:clear()
+	else
+    self:appendHistory("Command not found\n")
 	end
+  self:saveCommand()
+  self:newCommand()
 end
 
 return Terminal
