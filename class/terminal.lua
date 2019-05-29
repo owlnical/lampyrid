@@ -125,6 +125,13 @@ function Terminal:abort()
 	self.current = #self.command
 end
 
+-- Exit if the current text/input is empty
+function Terminal:exit()
+  if self.command[self.current].text == "" then
+    love.event.quit()
+  end
+end
+
 -- Run current input
 function Terminal:run()
 	local command, arg = self:splitInput()
