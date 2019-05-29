@@ -12,12 +12,17 @@ This program interacts with the ships destination coordinates
 
   set <x> <y> <z>     Set a new destination
   get                 Get the current destination
+  eta                 Get the estimated time of arrival
   help                Show this help
   ]])
 end
 
 function destination.get()
   write(string.format("Current destination: %s.%s.%s", uget("destination")))
+end
+
+function destination.eta()
+  write(string.format("ETA: %s minutes", get("eta")))
 end
 
 function destination.set(args)
