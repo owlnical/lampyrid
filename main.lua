@@ -12,6 +12,9 @@ function love.load()
   local data = love.thread.newThread("data.lua")
   data:start()
 
+  -- Required to delete multiple char with backspace
+  love.keyboard.setKeyRepeat(true)
+
   -- Font
   local fontsize = 20
   font = love.graphics.newFont("Hack-Regular.ttf", fontsize)
