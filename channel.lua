@@ -4,27 +4,33 @@ channel = {
   data = love.thread.getChannel("data")
 }
 
+-- Send requests to the data thread
 function request(command, packet, value)
   channel.data:supply({command, packet, value or false})
   return channel.data:demand(1)
 end
 
+-- Shortcut for get request
 function get(name)
   return request("get", name)
 end
 
+-- Shortcut for get request with unpack
 function uget(name)
   return unpack(request("get", name))
 end
 
+-- Shortcut for set request
 function set(name, value)
   return request("set", name, value)
 end
 
+-- Write to terminal
 function write(output)
 	channel.output:push(output .. "\n")
 end
 
+-- Read from terminal
 function read()
 	return channel.input:demand()
 end
