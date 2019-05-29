@@ -138,14 +138,14 @@ end
 -- Run current input
 function Terminal:run()
 	local command, arg = self:splitInput()
-  local bin = "bin/" .. command .. ".lua"
+  local path = "programs/" .. command .. ".lua"
 	self:appendHistory(self.prefix .. self:getInput() .. "\n")
   if command == "clear" then
     self:clear()
   elseif command == "exit" then
     love.event.quit()
-	elseif love.filesystem.getInfo(bin) then
-      thread = love.thread.newThread(bin)
+	elseif love.filesystem.getInfo(path) then
+      thread = love.thread.newThread(path)
       thread:start()
       channel.input:push(arg)
       self:appendHistory(channel.output:demand())
