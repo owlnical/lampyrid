@@ -1,31 +1,21 @@
 require "channel"
-local optparse = require "std/optparse"
-local help = [[
-echo (Lampyrid core) 0.1
+local echo = {}
 
-This test program comes with ABSOLUTELY NO WARRANTY.
+function echo.help()
+  write([[
+echo (Lampyrid core) 1.0
 
-    Usage: echo [<options>] <string>...
+This program prints all arguments
 
-    Options:
+  Usage: echo <string> <string>...
 
-      -h, --help               display help, then exit
-          --version            display version, then exit
-      --                       end of options
-    
-    ]]
-
-
-local parser = optparse(help)
-local arg, opt = parser:parse(read())
-local output
-
-if opt.help == true then
-	output = parser.helptext
-elseif opt.version == true then
-	output = parser.versiontext
-else
-	output = table.concat(arg, " ")
+  help                Show this help
+  ]])
 end
---los.print(output)
-write(output)
+
+local args = read()
+if echo[args[1]] then
+  echo[args[1]](args)
+else
+  write(table.concat(args, " "))
+end
