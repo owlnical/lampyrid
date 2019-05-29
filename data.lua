@@ -11,11 +11,16 @@ data = {
 	traveling = true,
 	eta = 0
 }
-while true do
-  command = channel:demand()
-  if command == "getPosition" then
-    channel:supply("000")
+
+function data.get(name)
+  if data[name] then
+    return data[name]
   else
-    channel:supply(false)
+    return false
   end
+end
+
+while true do
+  command, packet = unpack(channel:demand())
+  channel:supply(data[packet])
 end
