@@ -118,6 +118,13 @@ function Terminal:newCommand()
 	self.current = #self.command
 end
 
+-- Abort the current command
+-- Clears all text/input from the current row
+function Terminal:abort()
+	self.command[#self.command] = {text = "", original = ""}
+	self.current = #self.command
+end
+
 -- Run current input
 function Terminal:run()
 	local command, arg = self:splitInput()
