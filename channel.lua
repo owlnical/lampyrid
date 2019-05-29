@@ -4,9 +4,21 @@ channel = {
   data = love.thread.getChannel("data")
 }
 
-function request(data)
-  local response = channel.data:supply(data)
-  return channel.data:demand()
+function request(command, packet, value)
+  channel.data:supply({command, packet, value or false})
+  return channel.data:demand(1)
+end
+
+function get(name)
+  return request("get", name)
+end
+
+function uget(name)
+  return unpack(request("get", name))
+end
+
+function set(name, value)
+  return request("set", name, value)
 end
 
 function write(output)

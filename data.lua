@@ -13,14 +13,23 @@ data = {
 }
 
 function data.get(name)
+  local reply = false
   if data[name] then
-    return data[name]
-  else
-    return false
+    reply = data[name]
   end
+  channel:supply(reply)
+end
+
+function data.set(name, value)
+  local reply = false
+  if name and value then
+    data[name] = value
+    reply = true
+  end
+  channel:supply(reply)
 end
 
 while true do
-  command, packet = unpack(channel:demand())
-  channel:supply(data[packet])
+  local command, name, value = unpack(channel:demand())
+  data[command](name, value)
 end
