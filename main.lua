@@ -10,15 +10,6 @@ function love.load()
   local data = love.thread.newThread("data.lua")
   data:start()
 
-	-- Navigation
-	position = cpml.vec3.new(0, 0, 0)
-	destination = cpml.vec3.new(0, 0, 0)
-	distance = 0
-	travel_time = 0
-	speed = 10
-	traveling = true
-	eta = 0
-
   local fontsize = 20
   terminal = Terminal:new("$ Welcome to Lampyrid v" .. version .. "\n", fontsize)
   view = "terminal"
