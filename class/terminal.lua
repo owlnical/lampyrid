@@ -18,11 +18,7 @@ function Terminal:initialize(text, fontsize, prefix, suffix)
   self.maxlines = love.graphics.getHeight() / fontsize * 0.75
 
 	-- All commands
-	self.command = {}
-
-	self.command[1] = {
-		text = ""
-	}
+	self.command = {{text = ""}}
 
 	-- The currently viewed command
 	self.current = 1
