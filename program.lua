@@ -4,8 +4,10 @@ function program.run()
   local args = read()
   if program[args[1]] then
     program[args[1]](args)
-  else
+  elseif program.get and not args[1] then
     program.get()
+  else
+    write("Error: unknown argument. Try " .. name .. " help.")
   end
 end
 
