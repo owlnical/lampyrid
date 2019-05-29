@@ -5,6 +5,8 @@ local moonshine = require 'lib/moonshine'
 local string = require "std/string"
 local class = require "lib/middleclass"
 local Terminal = require "class/terminal"
+require "channel"
+traveling = true
 
 function love.load()
   local data = love.thread.newThread("data.lua")
@@ -53,25 +55,10 @@ end
 
 function love.update(dt)
   rotation = rotation + (dt * 0.001)
-	if traveling then travel(dt) end
-end
-
--- Move forward by calculating lerp step from distance, speed and time
-function travel(dt)
-	distance = position:dist(destination)
-	step = (distance / (distance - (dt * speed))) - 1
-	if step < 1 then
-		position = cpml.vec3.lerp(position, destination, step)
-		travel_time = travel_time + dt
-		eta = cpml.utils.round(distance / speed / 60)
-	else
-		print("Arrived after: " .. cpml.utils.round(travel_time / 60).. " minutes", step)
-		traveling = false
-		travel_time = 0
-		distance = 0
-		eta = 0
-		position = destination:clone()
-	end
+	if traveling then
+    channel.data:supply({"travel", dt})
+    traveling = channel.data:demand()
+  end
 end
 
 -- Add input to the terminal
