@@ -80,6 +80,8 @@ function love.keypressed(key)
     terminal:abort()
     elseif key=="d" and love.keyboard.isDown("lctrl","rctrl") then
     terminal:exit()
+  elseif key=="w" and love.keyboard.isDown("lctrl","rctrl") then
+    terminal:deleteWord()
   elseif key == "f1" then
     view = "terminal"
   elseif key == "f2" then

@@ -132,6 +132,13 @@ function Terminal:exit()
   end
 end
 
+-- Delete the last word in the current text/input
+function Terminal:deleteWord()
+  local args = string.split(self:getInput())
+	table.remove(args, #args)
+  self:setInput(table.concat(args, " "))
+end
+
 -- Run current input
 function Terminal:run()
 	local command, arg = self:splitInput()
