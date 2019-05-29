@@ -22,10 +22,12 @@ end
 
 function destination.set(args)
   local command, x, y, z = unpack(args)
+  x = tonumber(x)
+  y = tonumber(y)
+  z = tonumber(z)
   if x and y and z then
-    if set("destination", {tonumber(x), tonumber(y), tonumber(z)}) then
-      write(string.format("Destination set to %s-%s-%s", x, y, z))
-    end
+    set("destination", {x, y, z})
+    write(string.format("Destination set to %s.%s.%s", x, y, z))
   else
     write("Unable to set destination. Try destination help")
   end
