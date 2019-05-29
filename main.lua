@@ -97,6 +97,10 @@ function love.keypressed(key)
 		terminal:move(key)
   elseif key=="l" and love.keyboard.isDown("lctrl","rctrl") then
     terminal:clear()
+  elseif key == "f1" then
+    view = "terminal"
+  elseif key == "f2" then
+    view = "space"
     end
 end
 
