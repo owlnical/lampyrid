@@ -1,6 +1,6 @@
 require "channel"
 local position = require "program"
-
+name = "position"
 help = [[
 position (Lampyrid core) 0.1
 

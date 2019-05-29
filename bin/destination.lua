@@ -1,9 +1,7 @@
 require "channel"
-
-local destination = {}
-
-function destination.help()
-  write([[
+local destination = require "program"
+name = "destination"
+help = [[
 destination (Lampyrid core) 1.0
 
 This program interacts with the ships destination coordinates
@@ -15,8 +13,7 @@ This program interacts with the ships destination coordinates
   eta                 Get the estimated time of arrival
   distance            Get the distance to the destination
   help                Show this help
-  ]])
-end
+]]
 
 function destination.get()
   write(string.format("Current destination: %s.%s.%s", uget("destination")))
@@ -43,10 +40,4 @@ function destination.set(args)
   end
 end
 
-local args = read()
-
-if destination[args[1]] then
-  destination[args[1]](args)
-else
-  write("Unknown command. Try destination help")
-end  
+destination.run()
