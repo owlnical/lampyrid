@@ -1,4 +1,2 @@
-local love = require "love"
 require "channel"
-major, minor, revision, codename = love.getVersion( )
-write("Love " .. codename .. " " .. major .. "." .. minor)
+write(string.format("Love %s.%s.%s %s", love.getVersion()))
