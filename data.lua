@@ -1,6 +1,18 @@
 -- Store data here, which can be requested from anywhere
+local math = require("love.math")
 local cpml = require("lib/cpml")
 local channel = love.thread.getChannel("data")
+
+rng = math.newRandomGenerator(os.time())
+range = 1000
+planets = {}
+for i=1, 10, 1 do
+  planets[i] = {
+    name = "planet " .. i,
+    position = {rng:random(range), rng:random(range), rng:random(range)}
+  }
+end
+
 data = {
   -- Navigation
   position = {0, 0, 0},
@@ -9,7 +21,11 @@ data = {
   travel_time = 0,
   speed = 5,
   traveling = true,
-  eta = 0
+  eta = 0,
+
+  -- Universe
+  planets = planets,
+  sensorrange = 1000
 }
 
 vec3 = {}
