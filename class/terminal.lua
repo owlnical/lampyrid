@@ -125,6 +125,8 @@ function Terminal:run()
 	self:appendHistory(self.prefix .. self:getInput() .. "\n")
   if command == "clear" then
     self:clear()
+  elseif command == "exit" then
+    love.event.quit()
 	elseif love.filesystem.getInfo(bin) then
       thread = love.thread.newThread(bin)
       thread:start()
