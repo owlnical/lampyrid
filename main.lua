@@ -68,25 +68,27 @@ function love.textinput(text)
 end
 
 function love.keypressed(key)
-    if key == "backspace" then
+  if key == "backspace" then
 		terminal:backspace()
 	elseif key == "return" then
 		terminal:run()
-	elseif key == "up" or key == "down" or key == "left" or key == "right" then
+	elseif key == "up" or key == "down" then
 		terminal:move(key)
-  elseif key=="l" and love.keyboard.isDown("lctrl","rctrl") then
-    terminal:clear()
-  elseif key=="c" and love.keyboard.isDown("lctrl","rctrl") then
-    terminal:abort()
-    elseif key=="d" and love.keyboard.isDown("lctrl","rctrl") then
-    terminal:exit()
-  elseif key=="w" and love.keyboard.isDown("lctrl","rctrl") then
-    terminal:deleteWord()
   elseif key == "f1" then
     view = "terminal"
   elseif key == "f2" then
     view = "space"
+  elseif love.keyboard.isDown("lctrl","rctrl") then
+    if key == "l" then
+      terminal:clear()
+    elseif key == "c" then
+      terminal:abort()
+    elseif key == "d" then
+      terminal:exit()
+    elseif key == "w" then
+      terminal:deleteWord()
     end
+  end
 end
 
 function love.threaderror(thread, errorstr)
