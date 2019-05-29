@@ -4,7 +4,7 @@ local destination = {}
 
 function destination.help()
   write([[
-destination (Lampyrid core) 0.1
+destination (Lampyrid core) 1.0
 
 This program interacts with the ships destination coordinates
 
@@ -13,6 +13,7 @@ This program interacts with the ships destination coordinates
   set <x> <y> <z>     Set a new destination
   get                 Get the current destination
   eta                 Get the estimated time of arrival
+  distance            Get the distance to the destination
   help                Show this help
   ]])
 end
@@ -23,6 +24,10 @@ end
 
 function destination.eta()
   write(string.format("ETA: %s minutes", get("eta")))
+end
+
+function destination.distance()
+  write(string.format("Distance to destination: %s", get("distance")))
 end
 
 function destination.set(args)
