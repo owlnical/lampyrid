@@ -62,9 +62,6 @@ function data.travel(dt)
   data.destination = {x, y, z}
   x, y, z = cpml.vec3.unpack(data.position3)
   data.position = {x, y, z}
-
-  -- Return traveling status
-  channel:supply(data.traveling)
 end
 
 -- Main loop listening for commands

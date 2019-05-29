@@ -6,7 +6,6 @@ local string = require "std/string"
 local class = require "lib/middleclass"
 local Terminal = require "class/terminal"
 require "channel"
-traveling = true
 timeout = 0
 
 function love.load()
@@ -57,9 +56,8 @@ end
 function love.update(dt)
   rotation = rotation + (dt * 0.001)
   timeout = timeout + dt
-	if traveling and timeout > 0.1 then
+	if get("traveling") and timeout > 0.1 then
     channel.data:supply({"travel", timeout})
-    traveling = channel.data:demand()
     timeout = 0
   end
 end
