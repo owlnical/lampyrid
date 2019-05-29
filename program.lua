@@ -1,5 +1,8 @@
+-- Shared library for all programs
 local program = {}
 
+-- run the program function which matches the first arg
+-- fallback to function get() if it exists. Otherwise print error
 function program.__run()
   local args = read()
   if program[args[1]] then
@@ -11,6 +14,7 @@ function program.__run()
   end
 end
 
+-- This requires that help is a global in the program
 function program.help()
   write(help)
 end
