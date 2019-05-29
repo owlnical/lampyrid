@@ -21,6 +21,7 @@ function love.load()
 
   local fontsize = 20
   terminal = Terminal:new("$ Welcome to Lampyrid v" .. version .. "\n", fontsize)
+  view = "terminal"
 	font = love.graphics.newFont("Hack-Regular.ttf", fontsize)
 	love.graphics.setFont(font)
 
@@ -34,21 +35,33 @@ function love.load()
 		scanlines = { opacity = 0.1},
 		vignette = { opacity = 0.1}
 	}
+
+  --images
+  stars = love.graphics.newImage( "img/stars.jpg" )
+  planet = love.graphics.newImage( "img/planet.png" )
+  rotation = 0
 end
 
 function love.draw()
-	love.graphics.setBackgroundColor(0,0,0)
-
 	-- Draw monitor with shader effects
 	monitor(function()
-		love.graphics.setColor(0.1, 0.1, 0.1, 1)
-		love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
-		love.graphics.setColor(1, 1, 1)
-	  love.graphics.printf(terminal:getContent(), 20, 20, love.graphics.getWidth()-50)
-    end)
+    if view == "terminal" then
+      love.graphics.setColor(0.1, 0.1, 0.1)
+      love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
+      love.graphics.setColor(1, 1, 1)
+      love.graphics.printf(terminal:getContent(), 20, 20, love.graphics.getWidth()-50)
+    elseif view == "space" then
+      love.graphics.setColor(1, 1, 1)
+      love.graphics.draw(stars, 0,0)
+      love.graphics.draw(planet, 600, 600, rotation, 1.1, 1.1, 500, 500)--, 3, 3)
+      love.graphics.setColor(0.1, 0.1, 0.1, 0.3)
+      love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
+    end
+  end)
 end
 
 function love.update(dt)
+  rotation = rotation + (dt * 0.001)
 	if traveling then travel(dt) end
 end
 
