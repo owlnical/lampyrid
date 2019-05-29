@@ -17,4 +17,4 @@ function position.get()
   write(string.format("Current position: %s.%s.%s", uget("position")))
 end
 
-position.run()
+position.__run()

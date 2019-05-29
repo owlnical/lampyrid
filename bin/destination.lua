@@ -40,4 +40,4 @@ function destination.set(args)
   end
 end
 
-destination.run()
+destination.__run()

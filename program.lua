@@ -1,6 +1,6 @@
 local program = {}
 
-function program.run()
+function program.__run()
   local args = read()
   if program[args[1]] then
     program[args[1]](args)

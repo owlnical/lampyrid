@@ -12,7 +12,7 @@ This program prints all arguments
 ]]
 
 -- Override standard run()
-function echo.run()
+function echo.__run()
   local args = read()
   if echo[args[1]] then
     echo[args[1]](args)
