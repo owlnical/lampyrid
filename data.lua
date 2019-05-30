@@ -1,7 +1,7 @@
 -- data.lua handles all vars etc
 -- vars can be get/set over the channel "data"
 
-local math = require("love.math")
+local lmath = require("love.math")
 local cpml = require("lib/cpml")
 local channel = {
   output = love.thread.getChannel("output"),
@@ -10,7 +10,7 @@ local channel = {
 
 -- Planet generator
 planets = {}
-rng = math.newRandomGenerator(os.time())
+rng = lmath.newRandomGenerator(os.time())
 range = 1000
 amount = 10
 for i=1, amount, 1 do
@@ -79,16 +79,16 @@ function data.travel(dt)
   -- Move towards the destination from the position based on the step
 	if step < data.distance then
 		vec3.position = cpml.vec3.lerp(vec3.position, vec3.destination, step)
-		data.travel_time = data.travel_time + dt
+		data.travel_time = data.travel_time + dt / 60
 		data.eta = cpml.utils.round(data.distance / data.speed / 60)
 
   -- We're here, reset all traveling values
-	else
+else
+    write(string.format("Arrived at destination after %i minutes", math.ceil(data.travel_time)))
 		data.traveling = false
 		data.travel_time = 0
 		data.distance = 0
 		data.eta = 0
-    write("Arrived at destination")
 		vec3.position = vec3.destination:clone()
 	end
 
