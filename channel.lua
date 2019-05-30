@@ -39,13 +39,3 @@ end
 function read()
 	return channel.input:demand()
 end
-
--- Update current position
-function travel(dt)
-  if get("traveling") then
-    channel.data:supply({"travel", dt})
-  elseif get("arrived") then
-    set("arrived", false)
-    write("Arrived at destination", "before input")
-  end
-end

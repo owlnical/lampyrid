@@ -62,7 +62,9 @@ end
 
 function love.update(dt)
   planet.rotation = planet.rotation + (dt * 0.001)
-  travel(dt)
+  if get("traveling") then
+    channel.data:supply({"travel", dt})
+  end
   terminal:listen()
 end
 
