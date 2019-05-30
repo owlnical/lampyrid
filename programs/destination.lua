@@ -1,6 +1,5 @@
 require "channel"
 local destination = require "program"
-name = "destination"
 help = [[
 destination (Lampyrid core) 1.0
 
@@ -40,4 +39,4 @@ function destination.set(args)
   end
 end
 
-destination.__run()
+run("destination")

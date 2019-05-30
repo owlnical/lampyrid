@@ -1,6 +1,5 @@
 require "channel"
 local echo = require "program"
-name = "echo"
 help = [[
 echo (Lampyrid core) 1.0
 
@@ -12,7 +11,7 @@ This program prints all arguments
 ]]
 
 -- Override standard run()
-function echo.__run()
+function run()
   local args = read()
   if echo[args[1]] then
     echo[args[1]](args)
@@ -21,4 +20,4 @@ function echo.__run()
   end
 end
 
-echo.run()
+run()

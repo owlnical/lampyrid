@@ -1,6 +1,5 @@
 require "channel"
 local uname = require("program")
-name = "uname"
 help = [[
 uname (Lampyrid core) 1.0
 
@@ -19,4 +18,4 @@ end
 
 uname.show = uname.get
 
-uname.__run()
+run("uname")

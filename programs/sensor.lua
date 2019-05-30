@@ -1,7 +1,6 @@
 require "channel"
 local cpml = require("lib/cpml")
 local sensor = require("program")
-name = "sensor"
 help = [[
 sensor (Lampyrid core) 0.1
 
@@ -74,4 +73,4 @@ z: %s]],
   planet.name, planet.distance, unpack(planet.position))
 end
 
-sensor.__run()
+run("sensor")

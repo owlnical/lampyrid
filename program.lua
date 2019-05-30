@@ -3,8 +3,8 @@ local program = {}
 
 -- run the program function which matches the first arg
 -- fallback to function get() if it exists. Otherwise print error
-function program.__run()
-  local args = read()
+function run(name)
+  local args = read() -- read terminal input
   if program[args[1]] then
     program[args[1]](args)
   elseif program.get and not args[1] then

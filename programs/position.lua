@@ -1,6 +1,5 @@
 require "channel"
 local position = require "program"
-name = "position"
 help = [[
 position (Lampyrid core) 0.1
 
@@ -17,4 +16,4 @@ function position.get()
   write(string.format("Current position: %s.%s.%s", uget("position")))
 end
 
-position.__run()
+run("position")
