@@ -8,19 +8,22 @@ This program interacts with the ships sensors.
 
   Usage: sensor <command>
 
-  sweep               Scan for locations of interest within range
-  result <id>         Show results from last sweep. ID is optional
-  help                Show this help
+  sweep <range>   Scan for locations within optional range
+  result <id>     Show results from last sweep. ID is optional
+  help            Show this help
 ]]
 format = {}
 
 -- Loop planet table for each planet within range
-function sensor.sweep() 
+function sensor.sweep(range)
+  range = tonumber(range) or get("sensorrange")
+  if range > get("sensorrange") then
+    range = get("sensorrange")
+  end
+
+  -- Store planets within range of ship in results
   local result = {}
   local ship = cpml.vec3.new(get("position"))
-  local range = get("sensorrange")
-
-  -- Store planets within range in results
   for k, planet in ipairs(get("planets")) do
     local distance = math.ceil(ship:dist(cpml.vec3.new(planet.position)))
     if distance <= range then
@@ -36,17 +39,16 @@ end
 
   -- Print list of results
   -- or print single result
-function sensor.result(args)
-  local command, i = unpack(args)
-  i = tonumber(i) or 0
+function sensor.result(choice)
+  choice = tonumber(choice) or 0
   local result = get("result")
 
-  if result and i <= #result and i >= 1 then
-    output = format.single(result[i])
+  if result and choice <= #result and choice >= 1 then
+    output = format.single(result[choice])
   elseif result then
     output = format.list(result)
   else
-    output = "No results found"
+    output = "No previous results found. Try sensor sweep."
   end
   
   write(output)
