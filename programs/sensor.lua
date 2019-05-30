@@ -34,7 +34,7 @@ function sensor.sweep(range)
   
   -- Print results and store in data thread
   set("result", result)
-  write(format.list(result))
+  write(format.list(result, "Planets within range: " .. range))
 end
 
   -- Print list of results
@@ -46,7 +46,7 @@ function sensor.result(choice)
   if result and choice <= #result and choice >= 1 then
     output = format.single(result[choice])
   elseif result then
-    output = format.list(result)
+    output = format.list(result, #result .. " planets from last sweep:")
   else
     output = "No previous results found. Try sensor sweep."
   end
@@ -55,8 +55,8 @@ function sensor.result(choice)
 end
 
 -- Take a table of results and format it as a list
-function format.list(result)
-  local list = "Planets within range:"
+function format.list(result, title)
+  local list = title or "Output as list:"
   for i, planet in ipairs(result) do
     list = list .. string.format("\n%s: %s - %s",
       i, planet.name, planet.distance)
