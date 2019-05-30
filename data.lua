@@ -64,7 +64,7 @@ function data.travel(dt)
 
   -- We're not here yet
   -- Move towards the destination from the position based on the step
-	if step < 1 then
+	if step < data.distance then
 		vec3.position = cpml.vec3.lerp(vec3.position, vec3.destination, step)
 		data.travel_time = data.travel_time + dt
 		data.eta = cpml.utils.round(data.distance / data.speed / 60)
