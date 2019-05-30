@@ -26,6 +26,7 @@ data = {
   travel_time = 0,
   speed = 5,
   traveling = true,
+  arrived = false,
   eta = 0,
 
   -- Ship
@@ -81,6 +82,7 @@ function data.travel(dt)
   -- We're here, reset all traveling values
 	else
 		data.traveling = false
+    data.arrived = true
 		data.travel_time = 0
 		data.distance = 0
 		data.eta = 0

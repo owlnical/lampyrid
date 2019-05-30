@@ -26,11 +26,26 @@ function set(name, value)
 end
 
 -- Write to terminal
-function write(output)
-	channel.output:push(output .. "\n")
+function write(text, position)
+  position = position or "after input"
+	channel.output:push({
+      text = text .. "\n",
+      position = position
+    }
+  )
 end
 
 -- Read from terminal
 function read()
 	return channel.input:demand()
+end
+
+-- Update current position
+function travel(dt)
+  if get("traveling") then
+    channel.data:supply({"travel", dt})
+  elseif get("arrived") then
+    set("arrived", false)
+    write("Arrived at destination", "before input")
+  end
 end

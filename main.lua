@@ -63,6 +63,7 @@ end
 function love.update(dt)
   planet.rotation = planet.rotation + (dt * 0.001)
   travel(dt)
+  terminal:listen()
 end
 
 -- Update current position
@@ -78,7 +79,9 @@ function love.textinput(text)
 end
 
 function love.keypressed(key)
-  if key == "backspace" then
+  if key == "f3" then
+    write("space: test")
+  elseif key == "backspace" then
 		terminal:backspace()
 	elseif key == "return" then
 		terminal:run()

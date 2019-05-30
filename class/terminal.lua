@@ -49,6 +49,18 @@ function Terminal:getHistory(text)
 	return self.history
 end
 
+function Terminal:listen()
+  if channel.output:getCount() > 0 then
+    local output = channel.output:pop()
+    if output.position == "after input" then
+      self:appendHistory(self:getInput() .. output.text)
+      channel.input:clear()
+    elseif output.position == "before input" then
+      self:appendHistory("> " .. output.text)
+    end
+  end
+end
+
 -- Add to current terminal text
 function Terminal:appendHistory(text)
   self.history = self.history .. text
@@ -148,8 +160,6 @@ function Terminal:run()
       thread = love.thread.newThread(path)
       thread:start()
       channel.input:push(arg)
-      self:appendHistory(channel.output:demand())
-      channel.input:clear()
 	else
     self:appendHistory("Command not found\n")
 	end
