@@ -33,11 +33,24 @@ function love.load()
 	}
 
   --images
-  stars = love.graphics.newImage("img/stars.jpg")
+  star = love.graphics.newImage("img/star.png")
+  starsbackground = love.graphics.newImage("img/stars.jpg")
   planet = {
     img = love.graphics.newImage("img/planet.png"),
     rotation = 0
-}
+  }
+
+  -- Particle system
+  starparticles = love.graphics.newParticleSystem(star, 20)
+  starparticles:setPosition(love.graphics.getWidth() * 0.5, love.graphics.getHeight() * 0.5)
+  starparticles:setBufferSize(1000)
+  starparticles:setEmissionRate(100 )
+  starparticles:setEmitterLifetime(-1 )
+  starparticles:setParticleLifetime(2 )
+  starparticles:setColors(1, 1, 1, 1, 1, 1, 1, 0 )
+  starparticles:setSizes(0, 1, 1 )
+  starparticles:setSpeed(300, 400 )
+  starparticles:setSpread(math.rad(360))
 
   -- Initially view the terminal
   view = "terminal"
@@ -50,9 +63,13 @@ function love.draw()
       love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
       love.graphics.setColor(1, 1, 1)
       love.graphics.printf(terminal:getContent(), 20, 20, love.graphics.getWidth()-50)
+    elseif view == "space" and get("traveling") then
+      love.graphics.draw(starparticles )
+      love.graphics.setColor(0.1, 0.1, 0.1, 0.3)
+      love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
     elseif view == "space" then
       love.graphics.setColor(1, 1, 1)
-      love.graphics.draw(stars, 0,0)
+      love.graphics.draw(starsbackground, 0,0)
       love.graphics.draw(planet.img, 600, 600, planet.rotation, 1.1, 1.1, 500, 500)--, 3, 3)
       love.graphics.setColor(0.1, 0.1, 0.1, 0.3)
       love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
@@ -63,6 +80,7 @@ end
 function love.update(dt)
   planet.rotation = planet.rotation + (dt * 0.001)
   if get("traveling") then
+    starparticles:update(dt)
     channel.data:supply({"travel", dt})
   end
   terminal:listen()
