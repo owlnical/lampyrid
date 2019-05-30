@@ -9,10 +9,10 @@ local channel = {
 }
 
 -- Planet generator
-planets = {}
+local planets = {}
+local range = 1000
+local amount = 10
 rng = lmath.newRandomGenerator(os.time())
-range = 1000
-amount = 10
 for i=1, amount, 1 do
   planets[i] = {
     name = "planet " .. i,
@@ -39,8 +39,6 @@ data = {
   planets = planets
 }
 
-vec3 = {}
-
 -- Read a value from the data table
 function data.get(name)
   local reply = false
@@ -62,10 +60,10 @@ end
 
 -- Move forward by calculating lerp step from position, distance, speed and deltatime
 function data.travel(dt)
-
-  -- Convert the destination/position tables to vectors
-  vec3.destination = cpml.vec3.new(data.destination)
-  vec3.position = cpml.vec3.new(data.position)
+  local vec3 = {
+    destination = cpml.vec3.new(data.destination),
+    position = cpml.vec3.new(data.position)
+  }
 
   -- Current distance to destination
 	data.distance = vec3.position:dist(vec3.destination)

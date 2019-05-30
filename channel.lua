@@ -5,8 +5,8 @@ channel = {
 }
 
 -- Send requests to the data thread
-function request(command, packet, value)
-  channel.data:supply({command, packet, value})
+function request(...)
+  channel.data:supply({...})
   return channel.data:demand()
 end
 
