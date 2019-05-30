@@ -3,7 +3,10 @@
 
 local math = require("love.math")
 local cpml = require("lib/cpml")
-local channel = love.thread.getChannel("data")
+local channel = {
+  output = love.thread.getChannel("output"),
+  data = love.thread.getChannel("data")
+}
 
 -- Planet generator
 planets = {}
@@ -44,7 +47,7 @@ function data.get(name)
   if data[name] then
     reply = data[name]
   end
-  channel:supply(reply)
+  channel.data:supply(reply)
 end
 
 -- Assign a value to the data table
@@ -54,7 +57,7 @@ function data.set(name, value)
     data[name] = value
     reply = true
   end
-  channel:supply(reply)
+  channel.data:supply(reply)
 end
 
 -- Move forward by calculating lerp step from position, distance, speed and deltatime
@@ -82,10 +85,10 @@ function data.travel(dt)
   -- We're here, reset all traveling values
 	else
 		data.traveling = false
-    data.arrived = true
 		data.travel_time = 0
 		data.distance = 0
 		data.eta = 0
+    write("Arrived at destination")
 		vec3.position = vec3.destination:clone()
 	end
 
@@ -94,8 +97,17 @@ function data.travel(dt)
   data.position = {cpml.vec3.unpack(vec3.position)}
 end
 
+-- Write to terminal before current input string.
+function write(text, position)
+	channel.output:push({
+      text = text .. "\n",
+      position = "before input"
+    }
+  )
+end
+
 -- Main loop listening for commands
 while true do
-  local command, name, value = unpack(channel:demand())
+  local command, name, value = unpack(channel.data:demand())
   data[command](name, value)
 end
