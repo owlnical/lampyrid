@@ -26,8 +26,7 @@ function destination.distance()
   write(string.format("Distance to destination: %s", get("distance")))
 end
 
-function destination.set(args)
-  local command, x, y, z = unpack(args)
+function destination.set(x, y, z)
   x = tonumber(x)
   y = tonumber(y)
   z = tonumber(z)
