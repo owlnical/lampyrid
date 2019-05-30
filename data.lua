@@ -16,7 +16,7 @@ rng = lmath.newRandomGenerator(os.time())
 for i=1, amount, 1 do
   planets[i] = {
     name = "planet " .. i,
-    position = {rng:random(range), rng:random(range), rng:random(range)}
+    position = {rng:random(-range, range), rng:random(-range, range), rng:random(-range, range)}
   }
 end
 
