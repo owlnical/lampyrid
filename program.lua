@@ -5,9 +5,11 @@ local program = {}
 -- fallback to function get() if it exists. Otherwise print error
 function run(name)
   local args = read() -- read terminal input
-  if program[args[1]] then
-    program[args[1]](args)
-  elseif program.get and not args[1] then
+  local subcommand = args[1]
+  table.remove(args, 1)
+  if program[subcommand] then
+    program[subcommand](unpack(args))
+  elseif program.get and not subcommand then
     program.get()
   else
     write("Error: unknown argument. Try " .. name .. " help.")
