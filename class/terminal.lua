@@ -15,7 +15,7 @@ function Terminal:initialize(text, fontsize, prefix, suffix)
 	self.suffix = suffix or "█"
 
   -- We need max lines to clear the terminal when it's "full"
-  self.maxlines = love.graphics.getHeight() / fontsize * 0.75
+  self.maxlines = love.graphics.getHeight() / fontsize * 0.78
 
 	-- All commands
 	self.command = {{text = ""}}
@@ -50,15 +50,15 @@ function Terminal:getHistory(text)
 end
 
 -- Add to current terminal text
--- Remove top rows when the terminal is "full"
 function Terminal:appendHistory(text)
-  if select(2, self.history:gsub('\n', '\n')) > self.maxlines then
+  self.history = self.history .. text
+
+  -- Remove top rows when the terminal is "full"
+  while select(2, self.history:gsub('\n', '\n')) > self.maxlines do
     local t = string.split(self.history, "\n")
     table.remove(t, 1)
     self.history = table.concat(t, "\n")
   end
-
-	self.history = self.history .. text
 end
 
 function Terminal:getContent()
