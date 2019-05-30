@@ -49,7 +49,7 @@ end
 -- Assign a value to the data table
 function data.set(name, value)
   local reply = false
-  if name and value then
+  if name then
     data[name] = value
     reply = true
   end

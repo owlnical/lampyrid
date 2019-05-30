@@ -6,8 +6,8 @@ channel = {
 
 -- Send requests to the data thread
 function request(command, packet, value)
-  channel.data:supply({command, packet, value or false})
-  return channel.data:demand(1)
+  channel.data:supply({command, packet, value})
+  return channel.data:demand()
 end
 
 -- Shortcut for get request
