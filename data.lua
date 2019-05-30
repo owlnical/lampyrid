@@ -1,18 +1,23 @@
--- Store data here, which can be requested from anywhere
+-- data.lua handles all vars etc
+-- vars can be get/set over the channel "data"
+
 local math = require("love.math")
 local cpml = require("lib/cpml")
 local channel = love.thread.getChannel("data")
 
+-- Planet generator
+planets = {}
 rng = math.newRandomGenerator(os.time())
 range = 1000
-planets = {}
-for i=1, 10, 1 do
+amount = 10
+for i=1, amount, 1 do
   planets[i] = {
     name = "planet " .. i,
     position = {rng:random(range), rng:random(range), rng:random(range)}
   }
 end
 
+-- Store data here, which can be requested from anywhere
 data = {
   -- Navigation
   position = {0, 0, 0},
@@ -23,13 +28,16 @@ data = {
   traveling = true,
   eta = 0,
 
+  -- Ship
+  sensorrange = 1000,
+
   -- Universe
-  planets = planets,
-  sensorrange = 1000
+  planets = planets
 }
 
 vec3 = {}
 
+-- Read a value from the data table
 function data.get(name)
   local reply = false
   if data[name] then
@@ -38,6 +46,7 @@ function data.get(name)
   channel:supply(reply)
 end
 
+-- Assign a value to the data table
 function data.set(name, value)
   local reply = false
   if name and value then
@@ -69,7 +78,7 @@ function data.travel(dt)
 		data.travel_time = data.travel_time + dt
 		data.eta = cpml.utils.round(data.distance / data.speed / 60)
 
-    --We're here, reset all traveling values
+  -- We're here, reset all traveling values
 	else
 		data.traveling = false
 		data.travel_time = 0
