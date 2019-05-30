@@ -66,13 +66,6 @@ function love.update(dt)
   terminal:listen()
 end
 
--- Update current position
-function travel(dt)
-  if get("traveling") then
-    channel.data:supply({"travel", dt})
-  end
-end
-
 -- Add input to the terminal
 function love.textinput(text)
 	terminal:appendInput(text)
