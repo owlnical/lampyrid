@@ -16,6 +16,7 @@ function love.load()
   -- Load assets
   font = cargo.init("assets/fonts")
   image = cargo.init("assets/images")
+  particles = cargo.init("assets/particles")
 
   -- Required to delete multiple char with backspace
   love.keyboard.setKeyRepeat(true)
@@ -42,18 +43,6 @@ function love.load()
     img = image.planet,
     rotation = 0
   }
-
-  -- Particle system
-  starparticles = love.graphics.newParticleSystem(image.star, 20)
-  starparticles:setPosition(love.graphics.getWidth() * 0.5, love.graphics.getHeight() * 0.5)
-  starparticles:setBufferSize(1000)
-  starparticles:setEmissionRate(100 )
-  starparticles:setEmitterLifetime(-1 )
-  starparticles:setParticleLifetime(2 )
-  starparticles:setColors(1, 1, 1, 1, 1, 1, 1, 0 )
-  starparticles:setSizes(0, 1, 1 )
-  starparticles:setSpeed(300, 400 )
-  starparticles:setSpread(math.rad(360))
 end
 
 function love.draw()
