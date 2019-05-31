@@ -16,14 +16,16 @@ format = {}
 
 -- Loop planet table for each planet within range
 function sensor.sweep(range)
-  range = tonumber(range) or get("sensorrange")
-  if range > get("sensorrange") then
-    range = get("sensorrange")
+  local sensorrange = get("ship", "sensorrange")
+  range = tonumber(range) or sensorrange
+  if range > sensorrange then
+    range = sensorrange
   end
+  
 
   -- Store planets within range of ship in results
   local result = {}
-  local ship = cpml.vec3.new(get("position"))
+  local ship = cpml.vec3.new(get("navigation", "position"))
   for k, planet in ipairs(get("planets")) do
     local distance = math.ceil(ship:dist(cpml.vec3.new(planet.position)))
     if distance <= range then
@@ -42,16 +44,15 @@ end
 function sensor.result(choice)
   choice = tonumber(choice) or 0
   local result = get("result")
-
+  local text = ""
   if result and choice <= #result and choice >= 1 then
-    output = format.single(result[choice])
+    text = format.single(result[choice])
   elseif result then
-    output = format.list(result, #result .. " planets from last sweep:")
+    text = format.list(result, #result .. " planets from last sweep:")
   else
-    output = "No previous results found. Try sensor sweep."
+    text = "No previous results found. Try sensor sweep."
   end
-  
-  write(output)
+  write(text)
 end
 
 -- Take a table of results and format it as a list

@@ -11,9 +11,8 @@ require("channel")
 
 function love.load()
   -- Stores current game state
-  local data = love.thread.newThread("data.lua")
-  data:start()
-
+  love.thread.newThread("memory.lua"):start()
+  
   -- Load assets
   font = cargo.init("assets/fonts")
   image = cargo.init("assets/images")
@@ -47,7 +46,7 @@ function love.draw()
 	shader(function()
     if view == "terminal" then
       terminal:draw()
-    elseif view == "space" and get("traveling") then
+    elseif view == "space" and isTraveling() then
       particles.draw("stars")
     elseif view == "space" then
       planet:draw()
@@ -57,9 +56,9 @@ end
 
 function love.update(dt)
   planet:rotate(dt * 0.001)
-  if get("traveling") then
+  if isTraveling() then
     particles.stars:update(dt)
-    channel.data:supply({"travel", dt})
+    updateTravel(dt)
   end
   terminal:listen()
 end

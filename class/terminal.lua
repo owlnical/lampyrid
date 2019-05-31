@@ -1,9 +1,9 @@
 local class = require "lib/middleclass"
 local string = require "std/string"
 local utf8 = require "utf8"
-require "channel"
 local Image = require("class/image")
 local Terminal = class("Terminal", Image)
+require "channel"
 
 function Terminal:initialize(text, fontsize, prefix, suffix)
   Image.initialize(self, 0, 0)
@@ -53,13 +53,13 @@ function Terminal:getHistory(text)
 end
 
 function Terminal:listen()
-  if channel.output:getCount() > 0 then
-    local output = channel.output:pop()
-    if output.position == "after input" then
-      self:appendHistory(self:getInput() .. output.text)
-      channel.input:clear()
-    elseif output.position == "before input" then
-      self:appendHistory("> " .. output.text)
+  if output:getCount() > 0 then
+    local data = output:pop()
+    if data.position == "after input" then
+      self:appendHistory(self:getInput() .. data.text)
+      input:clear()
+    elseif data.position == "before input" then
+      self:appendHistory("> " .. data.text)
     end
   end
 end
@@ -162,7 +162,7 @@ function Terminal:run()
 	elseif love.filesystem.getInfo(path) then
       thread = love.thread.newThread(path)
       thread:start()
-      channel.input:push(arg)
+      input:push(arg)
 	else
     self:appendHistory("Command not found\n")
 	end

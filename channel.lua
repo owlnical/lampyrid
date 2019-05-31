@@ -1,41 +1,42 @@
-channel = {
-  input = love.thread.getChannel("input"),
-  output = love.thread.getChannel("output"),
-  data = love.thread.getChannel("data")
-}
-
--- Send requests to the data thread
-function request(...)
-  channel.data:supply({...})
-  return channel.data:demand()
-end
+input = love.thread.getChannel("input")    -- Input from terminal
+output = love.thread.getChannel("output")  -- Output to terminal
+memory = love.thread.getChannel("memory")  -- Contact with memory thread
 
 -- Shortcut for get request
-function get(name)
-  return request("get", name)
+function get(...)
+  memory:supply({"get", ...})
+  return memory:demand()
 end
 
 -- Shortcut for get request with unpack
-function uget(name)
-  return unpack(request("get", name))
+function uget(...)
+  return unpack(get(...))
 end
 
 -- Shortcut for set request
-function set(name, value)
-  return request("set", name, value)
+function set(...)
+  memory:supply({"set", ...})
 end
 
 -- Write to terminal
 function write(text, position)
   position = position or "after input"
-	channel.output:push({
+	output:push({
       text = text .. "\n",
       position = position
     }
   )
 end
 
+function isTraveling()
+  return get("navigation", "traveling")
+end
+
+function updateTravel(dt)
+  memory:supply({"travel", dt})
+end
+
 -- Read from terminal
 function read()
-	return channel.input:demand()
+	return input:demand()
 end

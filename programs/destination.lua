@@ -15,15 +15,15 @@ This program interacts with the ships destination coordinates
 ]]
 
 function destination.get()
-  write(string.format("Current destination: %s.%s.%s", uget("destination")))
+  write(string.format("Current destination: %s.%s.%s", uget("navigation", "destination")))
 end
 
 function destination.eta()
-  write(string.format("ETA: %s minutes", get("eta")))
+  write(string.format("ETA: %s minutes", get("navigation", "eta")))
 end
 
 function destination.distance()
-  write(string.format("Distance to destination: %s", get("distance")))
+  write(string.format("Distance to destination: %s", get("navigation", "distance")))
 end
 
 function destination.set(x, y, z)
@@ -32,14 +32,14 @@ function destination.set(x, y, z)
   z = tonumber(z)
   if x and y and z then
     -- Here we go!
-    set("destination", {x, y, z})
-    set("traveling", true)
+    set("navigation", "destination", {x, y, z})
+    set("navigation", "traveling", true)
     write(string.format("Destination set to %s.%s.%s", x, y, z))
 
     -- Trigger calculation and output data
-    channel.data:supply({"travel", 0.01})
-    write(string.format("Distance to destination: %s", get("distance")))
-    write(string.format("ETA: %s minutes", get("eta")))
+    travel(0.01)
+    write(string.format("Distance to destination: %s", get("navigation", "distance")))
+    write(string.format("ETA: %s minutes", get("navigation", "eta")))
   else
     write("Unable to set destination. Try destination help")
   end

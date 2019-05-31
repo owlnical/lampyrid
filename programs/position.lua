@@ -13,7 +13,7 @@ Running without a command prints the current position.
 ]]
 
 function position.get()
-  write(string.format("Current position: %s.%s.%s", uget("position")))
+  write(string.format("Current position: %s.%s.%s", uget("navigation", "position")))
 end
 
 run("position")
