@@ -20,7 +20,7 @@ ship = {
 }
 
 planets = {}
-local range = 1000
+local range = 100
 local amount = 10
 rng = lmath.newRandomGenerator(os.time())
 for i=1, amount, 1 do
@@ -88,7 +88,18 @@ function memory.updatePosition(dt)
 		navigation.distance = 0
 		navigation.eta = 0
 		vec3.position = vec3.destination:clone()
-	end
+
+  -- Check if we have a planet nearby
+    local ship = cpml.vec3.new(navigation.position)
+    local distance
+    for k, planet in ipairs(planets) do
+      distance = math.ceil(ship:dist(cpml.vec3.new(planet.position)))
+      if distance <= 5 then
+        output.write("Planet " .. planet.name .. " within range")
+        break
+      end
+    end
+  end
 
   -- Update the position and destination tables with the current vector
   navigation.destination = {cpml.vec3.unpack(vec3.destination)}
