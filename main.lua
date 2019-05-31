@@ -50,9 +50,7 @@ function love.draw()
     if view == "terminal" then
       terminal:draw()
     elseif view == "space" and get("traveling") then
-      love.graphics.draw(starparticles )
-      love.graphics.setColor(0.1, 0.1, 0.1, 0.3)
-      love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
+      particles.draw("stars")
     elseif view == "space" then
       love.graphics.setColor(1, 1, 1)
       love.graphics.draw(image.stars, 0,0)
@@ -66,7 +64,7 @@ end
 function love.update(dt)
   planet.rotation = planet.rotation + (dt * 0.001)
   if get("traveling") then
-    starparticles:update(dt)
+    particles.stars:update(dt)
     channel.data:supply({"travel", dt})
   end
   terminal:listen()
