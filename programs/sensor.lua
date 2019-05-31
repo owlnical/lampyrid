@@ -21,22 +21,8 @@ function sensor.sweep(range)
   if range > sensorrange then
     range = sensorrange
   end
-  
-
-  -- Store planets within range of ship in results
-  local result = {}
-  local ship = cpml.vec3.new(get("navigation", "position"))
-  for k, planet in ipairs(get("planets")) do
-    local distance = math.ceil(ship:dist(cpml.vec3.new(planet.position)))
-    if distance <= range then
-      planet.distance = distance
-      table.insert(result, planet)
-    end
-  end
-  
-  -- Print results and store in data thread
-  set("result", result)
-  write(format.list(result, "Planets within range: " .. range))
+  local result = findPlanet(range)
+  write(format.list(result, #result .. " planets within range: " .. range))
 end
 
   -- Print list of results

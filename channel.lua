@@ -32,8 +32,13 @@ function isTraveling()
   return get("navigation", "traveling")
 end
 
-function updateTravel(dt)
-  memory:supply({"travel", dt})
+function updatePosition(dt)
+  memory:supply({"updatePosition", dt})
+end
+
+function findPlanet(range)
+  memory:supply({"findPlanet", range})
+  return memory:demand()
 end
 
 -- Read from terminal

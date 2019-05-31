@@ -58,7 +58,7 @@ function love.update(dt)
   planet:rotate(dt * 0.001)
   if isTraveling() then
     particles.stars:update(dt)
-    updateTravel(dt)
+    updatePosition(dt)
   end
   terminal:listen()
 end
