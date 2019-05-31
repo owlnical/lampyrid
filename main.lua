@@ -41,7 +41,8 @@ function love.load()
   -- Planets
   planet = {
     img = image.planet,
-    rotation = 0
+    rotation = 0,
+    draw = drawplanet
   }
 end
 
@@ -52,11 +53,7 @@ function love.draw()
     elseif view == "space" and get("traveling") then
       particles.draw("stars")
     elseif view == "space" then
-      love.graphics.setColor(1, 1, 1)
-      love.graphics.draw(image.stars, 0,0)
-      love.graphics.draw(planet.img, 600, 600, planet.rotation, 1.1, 1.1, 500, 500)--, 3, 3)
-      love.graphics.setColor(0.1, 0.1, 0.1, 0.3)
-      love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
+      planet.draw()
     end
   end)
 end
@@ -103,4 +100,12 @@ end
 
 function love.threaderror(thread, errorstr)
 	print("thread error: " .. errorstr) -- Will print error instead of stopping the love
+end
+
+function drawplanet()
+  love.graphics.setColor(1, 1, 1)
+  love.graphics.draw(image.stars, 0,0)
+  love.graphics.draw(planet.img, 600, 600, planet.rotation, 1.1, 1.1, 500, 500)--, 3, 3)
+  love.graphics.setColor(0.1, 0.1, 0.1, 0.3)
+  love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
 end
