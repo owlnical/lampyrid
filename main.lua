@@ -5,6 +5,7 @@ local moonshine = require("lib/moonshine")
 local string = require("std/string")
 local class = require("lib/middleclass")
 local Terminal = require("class/terminal")
+local Planet = require("class/planet")
 local cargo = require('lib/cargo')
 require("channel")
 
@@ -38,12 +39,8 @@ function love.load()
 		vignette = {opacity = 0.1}
 	}
 
-  -- Planets
-  planet = {
-    img = image.planet,
-    rotation = 0,
-    draw = drawplanet
-  }
+  -- A planet
+  planet = Planet:new(image.planet)
 end
 
 function love.draw()
@@ -53,13 +50,13 @@ function love.draw()
     elseif view == "space" and get("traveling") then
       particles.draw("stars")
     elseif view == "space" then
-      planet.draw()
+      planet:draw()
     end
   end)
 end
 
 function love.update(dt)
-  planet.rotation = planet.rotation + (dt * 0.001)
+  planet:rotate(dt * 0.001)
   if get("traveling") then
     particles.stars:update(dt)
     channel.data:supply({"travel", dt})
@@ -100,12 +97,4 @@ end
 
 function love.threaderror(thread, errorstr)
 	print("thread error: " .. errorstr) -- Will print error instead of stopping the love
-end
-
-function drawplanet()
-  love.graphics.setColor(1, 1, 1)
-  love.graphics.draw(image.stars, 0,0)
-  love.graphics.draw(planet.img, 600, 600, planet.rotation, 1.1, 1.1, 500, 500)--, 3, 3)
-  love.graphics.setColor(0.1, 0.1, 0.1, 0.3)
-  love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
 end
