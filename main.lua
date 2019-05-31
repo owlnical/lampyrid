@@ -59,10 +59,7 @@ end
 function love.draw()
 	shader(function()
     if view == "terminal" then
-      love.graphics.setColor(0.1, 0.1, 0.1)
-      love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
-      love.graphics.setColor(1, 1, 1)
-      love.graphics.printf(terminal:getContent(), 20, 20, love.graphics.getWidth()-50)
+      terminal:draw()
     elseif view == "space" and get("traveling") then
       love.graphics.draw(starparticles )
       love.graphics.setColor(0.1, 0.1, 0.1, 0.3)
