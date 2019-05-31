@@ -2,9 +2,12 @@ local class = require "lib/middleclass"
 local string = require "std/string"
 local utf8 = require "utf8"
 require "channel"
-local Terminal = class("Terminal")
+local Image = require("class/image")
+local Terminal = class("Terminal", Image)
 
 function Terminal:initialize(text, fontsize, prefix, suffix)
+  Image.initialize(self, 0, 0)
+
 	-- All previous output and executed commands in a single string
 	self.history = text or ""
 
@@ -22,9 +25,6 @@ function Terminal:initialize(text, fontsize, prefix, suffix)
 
 	-- The currently viewed command
 	self.current = 1
-
-  -- size
-  self.w, self.h = love.graphics.getDimensions()
 end
 
 -- Return the text currently showed in the terminal
@@ -171,8 +171,7 @@ function Terminal:run()
 end
 
 function Terminal:draw()
-  love.graphics.setColor(0.1, 0.1, 0.1)
-  love.graphics.rectangle("fill", 000,000, self.w, self.h)
+  Terminal:drawOverlay(1)
   love.graphics.setColor(1, 1, 1)
   love.graphics.printf(self:getContent(), 20, 20, self.w-50)
 end
