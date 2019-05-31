@@ -5,6 +5,7 @@ local moonshine = require("lib/moonshine")
 local string = require("std/string")
 local class = require("lib/middleclass")
 local Terminal = require("class/terminal")
+local cargo = require('lib/cargo')
 require("channel")
 
 function love.load()
@@ -12,14 +13,18 @@ function love.load()
   local data = love.thread.newThread("data.lua")
   data:start()
 
+  -- Load assets
+  font = cargo.init("assets/fonts")
+  image = cargo.init("assets/images")
+
   -- Required to delete multiple char with backspace
   love.keyboard.setKeyRepeat(true)
 
-  -- Font
+  -- Terminal and initially view the terminal
   local fontsize = 20
-  font = love.graphics.newFont("Hack-Regular.ttf", fontsize)
-  love.graphics.setFont(font)
-  terminal = Terminal:new("$ Welcome to Lampyrid v" .. version .. "\n", fontsize)
+  love.graphics.setFont(font.hack_regular(fontsize))
+  terminal = Terminal:new("Welcome to Lampyrid v" .. version .. "\n", fontsize)
+  view = "terminal"
 
 	-- Shaders
 	shader = moonshine(moonshine.effects.crt)
@@ -32,16 +37,14 @@ function love.load()
 		vignette = {opacity = 0.1}
 	}
 
-  --images
-  star = love.graphics.newImage("img/star.png")
-  starsbackground = love.graphics.newImage("img/stars.jpg")
+  -- Planets
   planet = {
-    img = love.graphics.newImage("img/planet.png"),
+    img = image.planet,
     rotation = 0
   }
 
   -- Particle system
-  starparticles = love.graphics.newParticleSystem(star, 20)
+  starparticles = love.graphics.newParticleSystem(image.star, 20)
   starparticles:setPosition(love.graphics.getWidth() * 0.5, love.graphics.getHeight() * 0.5)
   starparticles:setBufferSize(1000)
   starparticles:setEmissionRate(100 )
@@ -51,9 +54,6 @@ function love.load()
   starparticles:setSizes(0, 1, 1 )
   starparticles:setSpeed(300, 400 )
   starparticles:setSpread(math.rad(360))
-
-  -- Initially view the terminal
-  view = "terminal"
 end
 
 function love.draw()
@@ -69,7 +69,7 @@ function love.draw()
       love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
     elseif view == "space" then
       love.graphics.setColor(1, 1, 1)
-      love.graphics.draw(starsbackground, 0,0)
+      love.graphics.draw(image.stars, 0,0)
       love.graphics.draw(planet.img, 600, 600, planet.rotation, 1.1, 1.1, 500, 500)--, 3, 3)
       love.graphics.setColor(0.1, 0.1, 0.1, 0.3)
       love.graphics.rectangle("fill", 000,000, love.graphics.getDimensions())
