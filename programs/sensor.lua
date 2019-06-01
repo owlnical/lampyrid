@@ -12,6 +12,9 @@ This program interacts with the ships sensors.
   result <id>     Show results from last sweep. ID is optional
   lock <id>       Set destination to planet from result list
   help            Show this help
+  ---
+  show <id>       result <id>
+  select <id>     lock <id>
 ]]
 format = {}
 
@@ -75,5 +78,9 @@ y: %s
 z: %s]],
   planet.name, planet.distance, unpack(planet.position))
 end
+
+-- alias
+sensor.select = sensor.lock
+sensor.show = sensor.result
 
 run("sensor")
