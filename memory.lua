@@ -39,7 +39,10 @@ local memory = {
   ship = ship,
   planets = planets,
   result = {},
-  time = 0
+  time = {
+    played = 0,
+    started = os.time()
+  }
 }
 
 function memory.findPlanet(range)
@@ -111,7 +114,7 @@ function memory.updatePosition(dt)
 end
 
 function memory.updateTime(dt)
-  memory.time = memory.time + dt
+  memory.time.played = memory.time.played + dt
 end
 
 -- Write to terminal before current input string.

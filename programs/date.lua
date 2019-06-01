@@ -12,10 +12,12 @@ Running without a command prints the current date.
   help                Show this help
 ]]
 
+-- Return the real date we started the game + the time we have played
+-- Add 400 years
 function date.get()
-  local now = os.date("%Y-%m-%d %H:%M", os.time())
-  local weAre400YearsIntoTheFuture = string.gsub(now, "20", "24", 1)
-  write("Current date is: " .. weAre400YearsIntoTheFuture)
+  local time = get("time")
+  local now = os.date("%Y-%m-%d %H:%M", time.played + time.started)
+  write("Current date is: " .. string.gsub(now, "20", "24", 1))
 end
 
 run("date")
