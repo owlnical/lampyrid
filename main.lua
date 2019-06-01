@@ -57,7 +57,7 @@ end
 function love.update(dt)
   updateTime(dt)
   planet:rotate(dt * 0.001)
-  if isTraveling() then
+  if isTraveling() and engineStarted() then
     particles.stars:update(dt)
     updatePosition(dt)
   end

@@ -28,6 +28,10 @@ function write(text, position)
   )
 end
 
+function engineStarted()
+  return get("ship", "engine")
+end
+
 function isTraveling()
   return get("navigation", "traveling")
 end
