@@ -36,6 +36,10 @@ function updatePosition(dt)
   memory:supply({"updatePosition", dt})
 end
 
+function updateTime(dt)
+  memory:push({"updateTime", dt})
+end
+
 function findPlanet(range)
   memory:supply({"findPlanet", range})
   return memory:demand()

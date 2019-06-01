@@ -38,7 +38,8 @@ local memory = {
   navigation = navigation,
   ship = ship,
   planets = planets,
-  result = {}
+  result = {},
+  time = 0
 }
 
 function memory.findPlanet(range)
@@ -107,6 +108,10 @@ function memory.updatePosition(dt)
   -- Update the position and destination tables with the current vector
   navigation.destination = {cpml.vec3.unpack(vec3.destination)}
   navigation.position = {cpml.vec3.unpack(vec3.position)}
+end
+
+function memory.updateTime(dt)
+  memory.time = memory.time + dt
 end
 
 -- Write to terminal before current input string.

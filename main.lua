@@ -55,6 +55,7 @@ function love.draw()
 end
 
 function love.update(dt)
+  updateTime(dt)
   planet:rotate(dt * 0.001)
   if isTraveling() then
     particles.stars:update(dt)
