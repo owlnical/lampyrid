@@ -10,9 +10,23 @@ This program interacts with the ships sensors.
 
   sweep <range>   Scan for locations within optional range
   result <id>     Show results from last sweep. ID is optional
+  lock <id>       Set destination to planet from result list
   help            Show this help
 ]]
 format = {}
+
+-- Change destination to a planet in the result list
+function sensor.lock(choice)
+  choice = tonumber(choice) or 0
+  local planet = get("result", choice)
+  if planet then
+    set("navigation", "lock", planet.id)
+    set("navigation", "destination", planet.position)
+    write(string.format("Locked planet %s\nChanged destination to %s %s %s", planet.name, unpack(planet.position)))
+  else
+    write("ID " .. choice .. " not found in result list. Try sensor result.")
+  end
+end
 
 -- Loop planet table for each planet within range
 function sensor.sweep(range)
@@ -45,7 +59,7 @@ end
 function format.list(result, title)
   local list = title or "Output as list:"
   for i, planet in ipairs(result) do
-    list = list .. string.format("\n%s: %s - %s",
+    list = list .. string.format("\n[%s]: %s, distance: %s",
       i, planet.name, planet.distance)
   end
   return list

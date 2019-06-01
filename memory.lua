@@ -12,7 +12,8 @@ navigation = {
   speed = 5,
   traveling = true,
   arrived = false,
-  eta = 0
+  eta = 0,
+  lock = 0
 }
 
 ship = {
@@ -26,7 +27,9 @@ rng = lmath.newRandomGenerator(os.time())
 for i=1, amount, 1 do
   planets[i] = {
     name = "planet " .. i,
-    position = {rng:random(-range, range), rng:random(-range, range), rng:random(-range, range)}
+    position = {rng:random(-range, range), rng:random(-range, range), rng:random(-range, range)},
+    id = i,
+    distance = 0
   }
 end
 
