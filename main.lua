@@ -1,4 +1,4 @@
-local version = 0.1
+local version = 0.2
 local cpml = require("lib/cpml")
 local utf8 = require("utf8")
 local moonshine = require("lib/moonshine")
