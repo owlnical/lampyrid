@@ -17,7 +17,8 @@ navigation = {
 }
 
 ship = {
-  sensorrange = 1000
+  sensorrange = 1000,
+  engine = false
 }
 
 planets = {}
