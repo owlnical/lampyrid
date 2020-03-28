@@ -20,6 +20,7 @@ exit            Exit the ships terminal without prompt
 help            Print this help message
 position        Print the ships current position
 sensor          Scan for nearby planets
+sleep           Sleep <x> seconds
 uname           Print the system kernel
 
 See additional help by passing the argument help to programs]]
