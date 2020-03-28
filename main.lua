@@ -86,7 +86,7 @@ function love.keypressed(key)
     if key == "l" then
       terminal:clear()
     elseif key == "c" then
-      terminal:abort()
+      terminal:interrupt()
     elseif key == "d" then
       terminal:exit()
     elseif key == "w" then

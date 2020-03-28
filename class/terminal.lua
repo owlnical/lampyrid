@@ -134,11 +134,20 @@ function Terminal:newCommand()
 	self.current = #self.command
 end
 
--- Abort the current command
--- Clears all text/input from the current row
-function Terminal:abort()
-	self.command[#self.command] = {text = "", original = ""}
-	self.current = #self.command
+-- Interrupts the current program by releasing the thread
+-- Creates a new empty line for a new command
+-- text formating differs depending on if a program is running or not
+function Terminal:interrupt()
+  if program:isRunning() then
+    program:release()
+    program = love.thread.newThread('-- dummy thread\n')
+    self:appendHistory(self:getInput() ..  "^C\n")
+  else
+    self:appendHistory(self.prefix .. self:getInput() ..  "^C\n")
+  end
+
+  self.command[#self.command] = {text = "", original = ""}
+  self.current = #self.command
 end
 
 -- Exit if the current text/input is empty
