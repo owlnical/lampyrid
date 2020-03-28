@@ -3,6 +3,7 @@ local string = require "std/string"
 local utf8 = require "utf8"
 local Image = require("class/image")
 local Terminal = class("Terminal", Image)
+local program = love.thread.newThread('-- dummy thread\n')
 require "channel"
 
 function Terminal:initialize(text, fontsize, prefix, suffix)
@@ -77,7 +78,11 @@ function Terminal:appendHistory(text)
 end
 
 function Terminal:getContent()
-	return self.history .. self.prefix .. terminal:getInput() .. self.suffix
+  if program:isRunning() then
+    return self.history .. terminal:getInput() .. self.suffix
+  else
+    return self.history .. self.prefix .. terminal:getInput() .. self.suffix
+  end
 end
 
 function Terminal:clear()
@@ -150,9 +155,14 @@ function Terminal:deleteWord()
   self:setInput(table.concat(args, " "))
 end
 
+-- Check if terminal
+
 -- Run current input
 function Terminal:run()
-	local command, arg = self:splitInput()
+  if program:isRunning() then
+    return
+  end
+  local command, arg = self:splitInput()
   local path = "programs/" .. command .. ".lua"
 	self:appendHistory(self.prefix .. self:getInput() .. "\n")
   if command == "clear" then
@@ -160,8 +170,8 @@ function Terminal:run()
   elseif command == "exit" then
     love.event.quit()
 	elseif love.filesystem.getInfo(path) then
-      thread = love.thread.newThread(path)
-      thread:start()
+      program= love.thread.newThread(path)
+      program:start()
       input:push(arg)
 	else
     self:appendHistory("Command not found\n")
