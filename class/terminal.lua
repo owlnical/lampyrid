@@ -53,7 +53,7 @@ function Terminal:getHistory(text)
 	return self.history
 end
 
-function Terminal:listen()
+function Terminal:update()
 	if output:getCount() > 0 then
 		local data = output:pop()
 		if data.position == "after input" then

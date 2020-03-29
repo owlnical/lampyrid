@@ -18,16 +18,16 @@ function love.load()
 	image = cargo.init("assets/images")
 	particles = cargo.init("assets/particles")
 
-	-- Required to delete multiple char with backspace
+	-- Enable text input character repeat so we can hold Backspace to erase characters
 	love.keyboard.setKeyRepeat(true)
 
-	-- Terminal and initially view the terminal
+	-- Create a new terminal and set it as initial view
 	local fontsize = 20
 	love.graphics.setFont(font.hack_regular(fontsize))
 	terminal = Terminal:new("Welcome to Lampyrid v" .. version .. "\n", fontsize)
 	view = "terminal"
 
-	-- Shaders
+	-- Shaders to emulate a crt monitor
 	shader = moonshine(moonshine.effects.crt)
 		.chain(moonshine.effects.scanlines)
 		.chain(moonshine.effects.vignette)
@@ -43,6 +43,9 @@ function love.load()
 end
 
 function love.draw()
+
+	-- Calls wrapped in the shader function
+	-- will be drawn with shader effects
 	shader(function()
 		if view == "terminal" then
 			terminal:draw()
@@ -61,18 +64,18 @@ function love.update(dt)
 		particles.stars:update(dt)
 		updatePosition(dt)
 	end
-	terminal:listen()
+	terminal:update()
 end
 
 -- Add input to the terminal
 function love.textinput(text)
-	terminal:appendInput(text)
+	if view == "terminal" then
+		terminal:appendInput(text)
+	end
 end
 
 function love.keypressed(key)
-	if key == "f3" then
-		write("space: test")
-	elseif key == "backspace" then
+	if key == "backspace" then
 		terminal:backspace()
 	elseif key == "return" then
 		terminal:run()
@@ -95,6 +98,7 @@ function love.keypressed(key)
 	end
 end
 
+-- Print thread errors instead of stopping the love
 function love.threaderror(thread, errorstr)
-	print("thread error: " .. errorstr) -- Will print error instead of stopping the love
+	print("thread error: " .. thread .. "\n" .. errorstr)
 end
