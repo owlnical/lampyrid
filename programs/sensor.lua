@@ -33,12 +33,33 @@ end
 
 -- Loop planet table for each planet within range
 function sensor.sweep(range)
-	local sensorrange = get("ship", "sensorrange")
-	range = tonumber(range) or sensorrange
-	if range > sensorrange then
-		range = sensorrange
+
+	-- Make sure we're not exceeding the scanning range
+	local range_limit = get("ship", "sensorrange")
+	range = tonumber(range) or range_limit
+	if range > range_limit then
+		write("Unable to set range to " .. range)
+		write("Sensor range limited to " .. range)
+		range = range_limit
 	end
-	local result = findPlanet(range)
+
+	-- Scan is based on All planets and the current position
+	local planets = get("planets")
+	local position = get("navigation", "position")
+
+	-- Store planets withing range in the results table
+	local result = {}
+	for k, planet in ipairs(planets) do
+		local distance = math.ceil(ship:dist(cpml.vec3.new(planet.position)))
+		if distance <= range then
+			write("planet found")
+			planet.distance = distance
+			table.insert(result, planet)
+		end
+	end
+
+	-- Store result for future use (e.g. locking coords) and print result
+	set("result", result)
 	write(format.list(result, #result .. " planets within range: " .. range))
 end
 

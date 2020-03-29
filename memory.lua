@@ -46,26 +46,6 @@ local memory = {
 	}
 }
 
-function memory.findPlanet(range)
-	range = range or ship.sensorrange
-	local result = {}
-	local distance
-
-	-- Store planets within range of ship in results
-	local ship = cpml.vec3.new(navigation.position)
-	for k, planet in ipairs(planets) do
-		distance = math.ceil(ship:dist(cpml.vec3.new(planet.position)))
-		if distance <= range then
-			planet.distance = distance
-			table.insert(result, planet)
-		end
-	end
-
-	-- Store and return result
-	memory.result = result
-	memory.channel:supply(result)
-end
-
 -- Move forward by calculating lerp step from position, distance, speed and deltatime
 function memory.updatePosition(dt)
 	local vec3 = {
