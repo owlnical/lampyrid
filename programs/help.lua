@@ -27,7 +27,7 @@ See additional help by passing the argument help to programs]]
 
 -- Override standard run()
 function helper.get()
-    write(programs)
+	write(programs)
 end
 
 run("help")

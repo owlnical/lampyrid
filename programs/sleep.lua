@@ -12,21 +12,21 @@ This program sleeps X seconds
 ]]
 
 function run()
-  local args = read() -- Read terminal arguments
-  local seconds
+	local args = read() -- Read terminal arguments
+	local seconds
 
-  if args[1] == "help" then
-    write(help)
-  elseif args[1] then
-    local seconds = tonumber(args[1])
-    if seconds then
-      timer.sleep(seconds)
-    else
-      write("Unable to interpret arg '" .. args[1] .. "' as seconds")
-    end
-  else
-    write("Missing argument <seconds>")
-  end
+	if args[1] == "help" then
+		write(help)
+	elseif args[1] then
+		local seconds = tonumber(args[1])
+		if seconds then
+			timer.sleep(seconds)
+		else
+			write("Unable to interpret arg '" .. args[1] .. "' as seconds")
+		end
+	else
+		write("Missing argument <seconds>")
+	end
 end
 
 run()

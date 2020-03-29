@@ -13,7 +13,7 @@ This program prints the ships OS kernel.
 ]]
 
 function uname.get()
-  write(string.format("Love %s.%s.%s %s", love.getVersion()))
+	write(string.format("Love %s.%s.%s %s", love.getVersion()))
 end
 
 uname.show = uname.get

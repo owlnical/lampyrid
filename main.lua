@@ -10,22 +10,22 @@ local cargo = require('lib/cargo')
 require("channel")
 
 function love.load()
-  -- Stores current game state
-  love.thread.newThread("memory.lua"):start()
-  
-  -- Load assets
-  font = cargo.init("assets/fonts")
-  image = cargo.init("assets/images")
-  particles = cargo.init("assets/particles")
+	-- Stores current game state
+	love.thread.newThread("memory.lua"):start()
+	
+	-- Load assets
+	font = cargo.init("assets/fonts")
+	image = cargo.init("assets/images")
+	particles = cargo.init("assets/particles")
 
-  -- Required to delete multiple char with backspace
-  love.keyboard.setKeyRepeat(true)
+	-- Required to delete multiple char with backspace
+	love.keyboard.setKeyRepeat(true)
 
-  -- Terminal and initially view the terminal
-  local fontsize = 20
-  love.graphics.setFont(font.hack_regular(fontsize))
-  terminal = Terminal:new("Welcome to Lampyrid v" .. version .. "\n", fontsize)
-  view = "terminal"
+	-- Terminal and initially view the terminal
+	local fontsize = 20
+	love.graphics.setFont(font.hack_regular(fontsize))
+	terminal = Terminal:new("Welcome to Lampyrid v" .. version .. "\n", fontsize)
+	view = "terminal"
 
 	-- Shaders
 	shader = moonshine(moonshine.effects.crt)
@@ -38,30 +38,30 @@ function love.load()
 		vignette = {opacity = 0.1}
 	}
 
-  -- A planet
-  planet = Planet:new(image.planet)
+	-- A planet
+	planet = Planet:new(image.planet)
 end
 
 function love.draw()
 	shader(function()
-    if view == "terminal" then
-      terminal:draw()
-    elseif view == "space" and isTraveling() then
-      particles.draw("stars")
-    elseif view == "space" then
-      planet:draw()
-    end
-  end)
+		if view == "terminal" then
+			terminal:draw()
+		elseif view == "space" and isTraveling() then
+			particles.draw("stars")
+		elseif view == "space" then
+			planet:draw()
+		end
+	end)
 end
 
 function love.update(dt)
-  updateTime(dt)
-  planet:rotate(dt * 0.001)
-  if isTraveling() and engineStarted() then
-    particles.stars:update(dt)
-    updatePosition(dt)
-  end
-  terminal:listen()
+	updateTime(dt)
+	planet:rotate(dt * 0.001)
+	if isTraveling() and engineStarted() then
+		particles.stars:update(dt)
+		updatePosition(dt)
+	end
+	terminal:listen()
 end
 
 -- Add input to the terminal
@@ -70,29 +70,29 @@ function love.textinput(text)
 end
 
 function love.keypressed(key)
-  if key == "f3" then
-    write("space: test")
-  elseif key == "backspace" then
+	if key == "f3" then
+		write("space: test")
+	elseif key == "backspace" then
 		terminal:backspace()
 	elseif key == "return" then
 		terminal:run()
 	elseif key == "up" or key == "down" then
 		terminal:move(key)
-  elseif key == "f1" then
-    view = "terminal"
-  elseif key == "f2" then
-    view = "space"
-  elseif love.keyboard.isDown("lctrl","rctrl") then
-    if key == "l" then
-      terminal:clear()
-    elseif key == "c" then
-      terminal:interrupt()
-    elseif key == "d" then
-      terminal:exit()
-    elseif key == "w" then
-      terminal:deleteWord()
-    end
-  end
+	elseif key == "f1" then
+		view = "terminal"
+	elseif key == "f2" then
+		view = "space"
+	elseif love.keyboard.isDown("lctrl","rctrl") then
+		if key == "l" then
+			terminal:clear()
+		elseif key == "c" then
+			terminal:interrupt()
+		elseif key == "d" then
+			terminal:exit()
+		elseif key == "w" then
+			terminal:deleteWord()
+		end
+	end
 end
 
 function love.threaderror(thread, errorstr)

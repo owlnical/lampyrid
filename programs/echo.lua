@@ -12,12 +12,12 @@ This program prints all arguments
 
 -- Override standard run()
 function run()
-  local args = read()
-  if echo[args[1]] then
-    echo[args[1]](args)
-  else
-    write(table.concat(args, " "))
-  end
+	local args = read()
+	if echo[args[1]] then
+		echo[args[1]](args)
+	else
+		write(table.concat(args, " "))
+	end
 end
 
 run()

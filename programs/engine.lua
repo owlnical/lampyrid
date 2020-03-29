@@ -14,22 +14,22 @@ This program interacts with the ships engine.
 ]]
 
 function engine.get()
-  local status = get("ship", "engine")
-  if get("ship", "engine") then
-    write("Engine is running")
-  else
-    write("The engine is stopped")
-  end
+	local status = get("ship", "engine")
+	if get("ship", "engine") then
+		write("Engine is running")
+	else
+		write("The engine is stopped")
+	end
 end
 
 function engine.stop()
-  set("ship", "engine", false)
-  write("Engine stopped")
+	set("ship", "engine", false)
+	write("Engine stopped")
 end
 
 function engine.start()
-  set("ship", "engine", true)
-  write("Engine started")
+	set("ship", "engine", true)
+	write("Engine started")
 end
 
 engine.status = engine.get

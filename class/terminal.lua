@@ -7,7 +7,7 @@ local program = love.thread.newThread('-- dummy thread\n')
 require "channel"
 
 function Terminal:initialize(text, fontsize, prefix, suffix)
-  Image.initialize(self, 0, 0)
+	Image.initialize(self, 0, 0)
 
 	-- All previous output and executed commands in a single string
 	self.history = text or ""
@@ -18,8 +18,8 @@ function Terminal:initialize(text, fontsize, prefix, suffix)
 	-- Characters after input
 	self.suffix = suffix or "█"
 
-  -- We need max lines to clear the terminal when it's "full"
-  self.maxlines = love.graphics.getHeight() / fontsize * 0.78
+	-- We need max lines to clear the terminal when it's "full"
+	self.maxlines = love.graphics.getHeight() / fontsize * 0.78
 
 	-- All commands
 	self.command = {{text = ""}}
@@ -54,39 +54,39 @@ function Terminal:getHistory(text)
 end
 
 function Terminal:listen()
-  if output:getCount() > 0 then
-    local data = output:pop()
-    if data.position == "after input" then
-      self:appendHistory(self:getInput() .. data.text)
-      input:clear()
-    elseif data.position == "before input" then
-      self:appendHistory("> " .. data.text)
-    end
-  end
+	if output:getCount() > 0 then
+		local data = output:pop()
+		if data.position == "after input" then
+			self:appendHistory(self:getInput() .. data.text)
+			input:clear()
+		elseif data.position == "before input" then
+			self:appendHistory("> " .. data.text)
+		end
+	end
 end
 
 -- Add to current terminal text
 function Terminal:appendHistory(text)
-  self.history = self.history .. text
+	self.history = self.history .. text
 
-  -- Remove top rows when the terminal is "full"
-  while select(2, self.history:gsub('\n', '\n')) > self.maxlines do
-    local t = string.split(self.history, "\n")
-    table.remove(t, 1)
-    self.history = table.concat(t, "\n")
-  end
+	-- Remove top rows when the terminal is "full"
+	while select(2, self.history:gsub('\n', '\n')) > self.maxlines do
+		local t = string.split(self.history, "\n")
+		table.remove(t, 1)
+		self.history = table.concat(t, "\n")
+	end
 end
 
 function Terminal:getContent()
-  if program:isRunning() then
-    return self.history .. terminal:getInput() .. self.suffix
-  else
-    return self.history .. self.prefix .. terminal:getInput() .. self.suffix
-  end
+	if program:isRunning() then
+		return self.history .. terminal:getInput() .. self.suffix
+	else
+		return self.history .. self.prefix .. terminal:getInput() .. self.suffix
+	end
 end
 
 function Terminal:clear()
-  self.history = ""
+	self.history = ""
 end
 
 -- Erase UTF-8 characters (https://love2d.org/wiki/love.textinput)
@@ -138,61 +138,61 @@ end
 -- Creates a new empty line for a new command
 -- text formating differs depending on if a program is running or not
 function Terminal:interrupt()
-  if program:isRunning() then
-    program:release()
-    program = love.thread.newThread('-- dummy thread\n')
-    self:appendHistory(self:getInput() ..  "^C\n")
-  else
-    self:appendHistory(self.prefix .. self:getInput() ..  "^C\n")
-  end
+	if program:isRunning() then
+		program:release()
+		program = love.thread.newThread('-- dummy thread\n')
+		self:appendHistory(self:getInput() ..	"^C\n")
+	else
+		self:appendHistory(self.prefix .. self:getInput() ..	"^C\n")
+	end
 
-  self.command[#self.command] = {text = "", original = ""}
-  self.current = #self.command
+	self.command[#self.command] = {text = "", original = ""}
+	self.current = #self.command
 end
 
 -- Exit if the current text/input is empty
 function Terminal:exit()
-  if self.command[self.current].text == "" then
-    love.event.quit()
-  end
+	if self.command[self.current].text == "" then
+		love.event.quit()
+	end
 end
 
 -- Delete the last word in the current text/input
 function Terminal:deleteWord()
-  local args = string.split(self:getInput())
+	local args = string.split(self:getInput())
 	table.remove(args, #args)
-  self:setInput(table.concat(args, " "))
+	self:setInput(table.concat(args, " "))
 end
 
 -- Check if terminal
 
 -- Run current input
 function Terminal:run()
-  if program:isRunning() then
-    return
-  end
-  local command, arg = self:splitInput()
-  local path = "programs/" .. command .. ".lua"
-	self:appendHistory(self.prefix .. self:getInput() .. "\n")
-  if command == "clear" then
-    self:clear()
-  elseif command == "exit" then
-    love.event.quit()
-	elseif love.filesystem.getInfo(path) then
-      program= love.thread.newThread(path)
-      program:start()
-      input:push(arg)
-	else
-    self:appendHistory("Command not found\n")
+	if program:isRunning() then
+		return
 	end
-  self:saveCommand()
-  self:newCommand()
+	local command, arg = self:splitInput()
+	local path = "programs/" .. command .. ".lua"
+	self:appendHistory(self.prefix .. self:getInput() .. "\n")
+	if command == "clear" then
+		self:clear()
+	elseif command == "exit" then
+		love.event.quit()
+	elseif love.filesystem.getInfo(path) then
+			program= love.thread.newThread(path)
+			program:start()
+			input:push(arg)
+	else
+		self:appendHistory("Command not found\n")
+	end
+	self:saveCommand()
+	self:newCommand()
 end
 
 function Terminal:draw()
-  Terminal:drawOverlay(1)
-  love.graphics.setColor(1, 1, 1)
-  love.graphics.printf(self:getContent(), 20, 20, self.w-50)
+	Terminal:drawOverlay(1)
+	love.graphics.setColor(1, 1, 1)
+	love.graphics.printf(self:getContent(), 20, 20, self.w-50)
 end
 
 return Terminal
