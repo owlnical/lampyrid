@@ -1,5 +1,7 @@
 local version = 0.2
 local cargo = require('lib/cargo')
+local class = require "lib/middleclass"
+local Terminal = require("class/terminal")
 
 function love.load()
 	-- Load assets
@@ -8,9 +10,12 @@ function love.load()
 	-- Enable text input character repeat so we can hold Backspace to erase characters
 	love.keyboard.setKeyRepeat(true)
 
+	-- Font settings
 	local fontsize = 20
 	love.graphics.setFont(font.hack_regular(fontsize))
 
+	-- Main terminal
+	terminal = Terminal:new("Main Terminal")
 end
 
 function love.draw()
