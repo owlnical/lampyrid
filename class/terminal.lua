@@ -14,6 +14,12 @@ function Terminal:initialize(name)
 	self.command = {}
 end
 
+--[[
+	INPUT
+	Methods handling the current input string.
+	Erasing/appending characters etc
+--]]
+
 function Terminal:appendInput()
 
 end
