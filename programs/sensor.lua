@@ -8,9 +8,9 @@ This program interacts with the ships sensors.
 
   Usage: sensor <command>
 
-  sweep <range>   Scan for locations within optional range
-  result <id>     Show results from last sweep. ID is optional
-  lock <id>       Set destination to planet from result list
+  sweep [range]   Scan for locations. Default: max range
+  result [id]     Show entry from result list. ID is optional
+  lock [id]       Set destination from result list. Default: 0
   help            Show this help
   ---
   show <id>       result <id>
