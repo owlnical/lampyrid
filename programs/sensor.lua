@@ -45,12 +45,12 @@ function sensor.sweep(range)
 
 	-- Scan is based on All planets and the current position
 	local planets = get("planets")
-	local position = get("navigation", "position")
+	local position = cpml.vec3.new(get("navigation", "position"))
 
 	-- Store planets withing range in the results table
 	local result = {}
 	for k, planet in ipairs(planets) do
-		local distance = math.ceil(ship:dist(cpml.vec3.new(planet.position)))
+		local distance = math.ceil(position:dist(cpml.vec3.new(planet.position)))
 		if distance <= range then
 			write("planet found")
 			planet.distance = distance
