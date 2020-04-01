@@ -16,7 +16,7 @@ function love.load()
 
 	-- Main terminal
 	terminal = Terminal:new("Main Terminal")
-	terminal:setBuffer("Welcome to Lampyrid v" .. version .. "\n")
+	terminal:appendBuffer("\nWelcome to Lampyrid v" .. version .. "\n")
 end
 
 function love.draw()
@@ -28,6 +28,7 @@ end
 
 -- Add input to the terminal
 function love.textinput(text)
+	terminal:readInput(text)
 end
 
 function love.keypressed(key)
