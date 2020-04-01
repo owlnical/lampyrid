@@ -185,7 +185,7 @@ function Terminal:run()
 			program:start()
 			input:push(arg)
 	else
-		self:appendHistory("Command not found\n")
+		self:appendHistory(command .. ": command not found\n")
 	end
 	self:saveCommand()
 	self:newCommand()
