@@ -178,6 +178,8 @@ function Terminal:run()
 		self:clear()
 	elseif command == "exit" then
 		love.event.quit()
+	elseif command == "" then
+		self:appendHistory("")
 	elseif love.filesystem.getInfo(path) then
 			program= love.thread.newThread(path)
 			program:start()
