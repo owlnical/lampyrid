@@ -100,5 +100,5 @@ end
 
 -- Print thread errors instead of stopping the love
 function love.threaderror(thread, errorstr)
-	print("thread error: " .. thread .. "\n" .. errorstr)
+	print("thread error: " .. "\n" .. errorstr)
 end
