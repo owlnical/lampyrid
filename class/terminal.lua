@@ -20,6 +20,9 @@ function Terminal:initialize(name)
 	-- The command currentl being edited
 	self.command.current = self.command.history[1]
 
+	-- Style
+	self.prefix = "$"
+	self.suffix = "█"
 end
 
 --[[
@@ -77,7 +80,11 @@ end
 
 function Terminal:draw()
 	love.graphics.setColor(1, 1, 1)
-	local text = string.format("%s\n%s", self.buffer, self.command.current.text)
+	local text = string.format("%s%s %s%s",
+		self.buffer,
+		self.prefix,
+		self.command.current.text,
+		self.suffix)
 	love.graphics.printf(text, 20, 20, 760)
 end
 
