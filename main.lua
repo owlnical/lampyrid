@@ -16,9 +16,11 @@ function love.load()
 
 	-- Main terminal
 	terminal = Terminal:new("Main Terminal")
+	terminal:setBuffer("Welcome to Lampyrid v" .. version .. "\n")
 end
 
 function love.draw()
+	terminal:draw()
 end
 
 function love.update(dt)
