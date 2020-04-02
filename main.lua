@@ -59,6 +59,8 @@ function love.keypressed(key)
 		terminal:backspace()
 	elseif ctrl and key == "d" then
 		terminal:exit()
+	elseif ctrl and key == "l" then
+		terminal:clearBuffer()
 	end
 end
 

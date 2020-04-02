@@ -93,6 +93,10 @@ function Terminal:setBuffer(text)
 	self.buffer = text
 end
 
+function Terminal:clearBuffer()
+	self.buffer = ""
+end
+
 function Terminal:appendBuffer(text)
 	self.buffer = self.buffer .. text
 end
