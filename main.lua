@@ -23,10 +23,12 @@ function love.load()
 	shader = moonshine(moonshine.effects.scanlines)
 		.chain(moonshine.effects.vignette)
 		.chain(moonshine.effects.glow)
+		.chain(moonshine.effects.godsray)
 		.chain(moonshine.effects.crt)
 	shader.parameters = {
 		crt = {distortionFactor = {1.06, 1.065}, x = 10, y = 50},
 		scanlines = {opacity = 0.1},
+		godsray = {exposure = 0.01 },
 		vignette = {opacity = 0.1}
 	}
 end
