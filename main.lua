@@ -43,6 +43,8 @@ function love.draw()
 end
 
 function love.update(dt)
+	-- Subtle scanlines flickr
+	shader.scanlines.width = love.math.random(2, 3)
 end
 
 -- Add input to the terminal
