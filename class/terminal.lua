@@ -85,7 +85,7 @@ function Terminal:draw()
 		self.prefix,
 		self.command.current.text,
 		self.suffix)
-	love.graphics.printf(text, 20, 20, 760)
+	love.graphics.printf(text, 15, 10, 760)
 end
 
 return Terminal

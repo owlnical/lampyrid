@@ -12,7 +12,7 @@ function love.load()
 	love.keyboard.setKeyRepeat(true)
 
 	-- Font settings
-	local fontsize = 20
+	local fontsize = 18 -- 26 rows
 	love.graphics.setFont(font.hack_regular(fontsize))
 
 	-- Main terminal
