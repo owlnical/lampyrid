@@ -1,3 +1,4 @@
+local utf8 = require("utf8")
 local class = require "lib/middleclass"
 local Terminal = class("Terminal")
 
@@ -41,8 +42,14 @@ function Terminal:appendInput(text)
 	self.command.current.text = self.command.current.text .. text
 end
 
+-- Backspace a character from current command
+-- (https://love2d.org/wiki/love.textinput)
 function Terminal:backspace()
-
+	local command = self.command.current
+	local byteoffset = utf8.offset(command.text, -1)
+	if byteoffset then
+		command.text = command.text:sub(1, byteoffset - 1)
+	end
 end
 
 function Terminal:clearCommand()

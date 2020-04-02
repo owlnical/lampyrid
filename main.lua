@@ -53,6 +53,9 @@ function love.textinput(text)
 end
 
 function love.keypressed(key)
+	if key == "backspace" then
+		terminal:backspace()
+	end
 end
 
 -- Print thread errors instead of stopping the love
