@@ -53,8 +53,12 @@ function love.textinput(text)
 end
 
 function love.keypressed(key)
+	local ctrl = love.keyboard.isDown("lctrl", "rctrl")
+
 	if key == "backspace" then
 		terminal:backspace()
+	elseif ctrl and key == "d" then
+		terminal:exit()
 	end
 end
 

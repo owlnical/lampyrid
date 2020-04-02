@@ -56,8 +56,9 @@ function Terminal:clearCommand()
 
 end
 
+-- Return the current command string
 function Terminal:getCommand()
-
+	return self.command.current.text
 end
 
 function Terminal:setCommand()
@@ -70,6 +71,17 @@ function Terminal:executeCommand()
 
 end
 
+
+--[[
+	MISC
+--]]
+
+-- Exit terminal/game
+function Terminal:exit()
+	if self:getCommand() == "" then
+		love.event.quit()
+	end
+end
 
 --[[
 	BUFFER
