@@ -20,10 +20,10 @@ function love.load()
 	terminal:appendBuffer("\nWelcome to Lampyrid v" .. version .. "\n")
 
 	-- Shaders to emulate a crt monitor
-	shader = moonshine(moonshine.effects.crt)
-		.chain(moonshine.effects.scanlines)
+	shader = moonshine(moonshine.effects.scanlines)
 		.chain(moonshine.effects.vignette)
 		.chain(moonshine.effects.glow)
+		.chain(moonshine.effects.crt)
 	shader.parameters = {
 		crt = {distortionFactor = {1.06, 1.065}, x = 10, y = 50},
 		scanlines = {opacity = 0.1},
