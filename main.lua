@@ -17,7 +17,7 @@ function love.load()
 
 	-- Main terminal
 	terminal = Terminal:new("Main Terminal")
-	terminal:appendBuffer("\nWelcome to Lampyrid v" .. version .. "\n")
+	terminal:printf("\nWelcome to Lampyrid v%s\n", version)
 
 	-- Shaders to emulate a crt monitor
 	shader = moonshine(moonshine.effects.scanlines)

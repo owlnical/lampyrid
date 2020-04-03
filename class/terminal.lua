@@ -136,10 +136,6 @@ function Terminal:clearBuffer()
 	self.buffer = ""
 end
 
-function Terminal:appendBuffer(text)
-	self.buffer = self.buffer .. text
-end
-
 function Terminal:print(text)
 	self:printf("%s %s\n", self.prefix, text)
 end
