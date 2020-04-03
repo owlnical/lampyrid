@@ -54,7 +54,7 @@ function Terminal:backspace()
 end
 
 function Terminal:clearCommand()
-
+	self.command.text = ""
 end
 
 -- Change active command to the specified id
@@ -105,8 +105,15 @@ function Terminal:execute()
 	self:print(self.command.text)
 	if self.command.text ~= "" then
 		--[[ PARSE AND EXECUTE COMMAND HERE ]]--
-		self:saveCommand()
-		self:newCommand()
+
+		-- If the command is identical to the previous one, just reset the string
+		-- otherwise, store it in history and start a new command
+		if self.history[2] and (self.command.text == self.history[2].text) then
+			self:clearCommand()
+		else
+			self:saveCommand()
+			self:newCommand()
+		end
 	end
 end
 
