@@ -102,6 +102,7 @@ end
 -- Try to execute the current command string
 -- and add it to the history table
 function Terminal:execute()
+	self:print(self.command.text)
 	if self.command.text ~= "" then
 		--[[ PARSE AND EXECUTE COMMAND HERE ]]--
 		self:saveCommand()
@@ -137,6 +138,14 @@ end
 
 function Terminal:appendBuffer(text)
 	self.buffer = self.buffer .. text
+end
+
+function Terminal:print(text)
+	self:printf("%s %s\n", self.prefix, text)
+end
+
+function Terminal:printf(text, ...)
+	self.buffer = self.buffer .. string.format(text, ...)
 end
 
 function Terminal:draw()
