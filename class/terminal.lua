@@ -84,6 +84,11 @@ function Terminal:setCommand()
 
 end
 
+-- Print the command to the buffer
+function Terminal:printCommand()
+	self:print(self.command.text)
+end
+
 -- add command to history
 function Terminal:saveCommand()
 	self.history[1] = {
@@ -109,7 +114,7 @@ end
 -- Try to execute the current command string
 -- and add it to the history table
 function Terminal:execute()
-	self:print(self.command.text)
+	self:printCommand()
 	if self.command.text ~= "" then
 		--[[ PARSE AND EXECUTE COMMAND HERE ]]--
 
