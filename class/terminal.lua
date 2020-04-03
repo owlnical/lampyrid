@@ -6,20 +6,21 @@ function Terminal:initialize(name)
 	self.name = name
 
 	-- All previous commands/output merged to a single string
+	-- does not include the current command
 	self.buffer = name
 
 	-- The current input mode
 	self.input_enabled = true
 
-	-- History of executed commands
+	-- History of executed commands, higher is older
 	self.history = {}
 	self.history[1] = {
 		text        = "",    -- The current command string
 		as_executed = ""     -- The string when the command was executed
 	}
 
-	-- Set the current command
-	-- This changes when the user moves up/down in history
+	-- The active command is currently the newest command
+	-- this will change when the user moved up/back in history
 	self.active_command = 1
 	self.command = self.history[1]
 
@@ -27,6 +28,8 @@ function Terminal:initialize(name)
 	self.prefix = "$"
 	self.suffix = "█"
 end
+
+
 
 --[[
 	INPUT AND COMMANDS
