@@ -14,12 +14,13 @@ function Terminal:initialize(name)
 	-- History of executed commands
 	self.history = {}
 	self.history[1] = {
-		text = "",        -- The current command string
-		as_executed = ""  -- The string when the command was executed
+		text        = "",    -- The current command string
+		as_executed = ""     -- The string when the command was executed
 	}
 
 	-- Set the current command
 	-- This changes when the user moves up/down in history
+	self.active_command = 1
 	self.command = self.history[1]
 
 	-- Style
@@ -56,6 +57,14 @@ function Terminal:clearCommand()
 
 end
 
+-- Change active command to the specified id
+function Terminal:setActiveCommand(id)
+	if self.history[id] then
+		self.active_command = id
+		self.command = self.history[id]
+	end
+end
+
 -- Return the current command string
 function Terminal:getCommand()
 	return self.command.text
@@ -65,10 +74,29 @@ function Terminal:setCommand()
 
 end
 
+-- add command to history
+function Terminal:saveCommand()
+	self.history[1] = {
+		text = self.command.text,
+		as_executed = self.command.text
+	}
+end
+
+-- Add a new command entry to the top of the history table
+-- Set it as the active command
+function Terminal:newCommand()
+	table.insert(self.history, 1, {text = "", as_executed })
+	self:setActiveCommand(1)
+end
+
 -- Try to execute the current command string
 -- and add it to the history table
-function Terminal:executeCommand()
-
+function Terminal:execute()
+	if self.command.text ~= "" then
+		--[[ PARSE AND EXECUTE COMMAND HERE ]]--
+		self:saveCommand()
+		self:newCommand()
+	end
 end
 
 
