@@ -12,15 +12,15 @@ function Terminal:initialize(name)
 	self.input_enabled = true
 
 	-- History of executed commands
-	self.command = {}
-	self.command[1] = {
+	self.history = {}
+	self.history[1] = {
 		text = "",        -- The current command string
 		as_executed = ""  -- The string when the command was executed
 	}
 
 	-- Set the current command
 	-- This changes when the user moves up/down in history
-	self.command.current = self.command[1]
+	self.command = self.history[1]
 
 	-- Style
 	self.prefix = "$"
@@ -40,16 +40,15 @@ function Terminal:readInput(text)
 end
 
 function Terminal:appendInput(text)
-	self.command.current.text = self.command.current.text .. text
+	self.command.text = self.command.text .. text
 end
 
 -- Backspace a character from current command
 -- (https://love2d.org/wiki/love.textinput)
 function Terminal:backspace()
-	local command = self.command.current
-	local byteoffset = utf8.offset(command.text, -1)
+	local byteoffset = utf8.offset(self.command.text, -1)
 	if byteoffset then
-		command.text = command.text:sub(1, byteoffset - 1)
+		self.command.text = self.command.text:sub(1, byteoffset - 1)
 	end
 end
 
@@ -59,7 +58,7 @@ end
 
 -- Return the current command string
 function Terminal:getCommand()
-	return self.command.current.text
+	return self.command.text
 end
 
 function Terminal:setCommand()
@@ -107,7 +106,7 @@ function Terminal:draw()
 	local text = string.format("%s%s %s%s",
 		self.buffer,
 		self.prefix,
-		self.command.current.text,
+		self.command.text,
 		self.suffix)
 	love.graphics.printf(text, 15, 10, 760)
 end
