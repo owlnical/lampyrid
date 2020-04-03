@@ -77,7 +77,11 @@ end
 
 -- Return the current command string
 function Terminal:getCommand()
-	return self.command.text
+	if self.command.text == "" then
+		return false
+	else
+		return self.command.text
+	end
 end
 
 function Terminal:setCommand()
@@ -115,7 +119,7 @@ end
 -- and add it to the history table
 function Terminal:execute()
 	self:printCommand()
-	if self.command.text ~= "" then
+	if self:getCommand() then
 		--[[ PARSE AND EXECUTE COMMAND HERE ]]--
 
 		-- If the command is identical to the previous one, just reset the string
@@ -136,7 +140,7 @@ end
 
 -- Exit terminal/game
 function Terminal:exit()
-	if self:getCommand() == "" then
+	if not self:getCommand() then
 		love.event.quit()
 	end
 end
