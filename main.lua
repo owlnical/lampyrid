@@ -63,6 +63,8 @@ function love.keypressed(key)
 		terminal:up()
 	elseif key == "down" then
 		terminal:down()
+	elseif ctrl and key == "c" then
+		terminal:interrupt()
 	elseif ctrl and key == "d" then
 		terminal:exit()
 	elseif ctrl and key == "l" then

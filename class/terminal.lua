@@ -99,6 +99,13 @@ function Terminal:newCommand()
 	self:setActiveCommand(1)
 end
 
+-- Interrupt the current command
+function Terminal:interrupt()
+	--[[ INTERRUPT RUNNING COMMAND HERE ]]--
+	self:printf("%s %s^C\n", self.prefix, self.command.text)
+	self:clearCommand()
+end
+
 -- Try to execute the current command string
 -- and add it to the history table
 function Terminal:execute()
