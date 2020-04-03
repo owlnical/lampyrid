@@ -12,14 +12,15 @@ function Terminal:initialize(name)
 	self.input_enabled = true
 
 	-- History of executed commands
-	self.command = {
-		history = {
-			{ text = "" }
-		}
+	self.command = {}
+	self.command[1] = {
+		text = "",        -- The current command string
+		as_executed = ""  -- The string when the command was executed
 	}
 
-	-- The command currentl being edited
-	self.command.current = self.command.history[1]
+	-- Set the current command
+	-- This changes when the user moves up/down in history
+	self.command.current = self.command[1]
 
 	-- Style
 	self.prefix = "$"
