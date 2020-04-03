@@ -59,6 +59,10 @@ function love.keypressed(key)
 		terminal:backspace()
 	elseif key == "return" then
 		terminal:execute()
+	elseif key == "up" then
+		terminal:up()
+	elseif key == "down" then
+		terminal:down()
 	elseif ctrl and key == "d" then
 		terminal:exit()
 	elseif ctrl and key == "l" then

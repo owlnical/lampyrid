@@ -65,6 +65,16 @@ function Terminal:setActiveCommand(id)
 	end
 end
 
+-- Move backward in command history
+function Terminal:up()
+	self:setActiveCommand(self.active_command + 1)
+end
+
+-- Move forward in command history
+function Terminal:down()
+	self:setActiveCommand(self.active_command - 1)
+end
+
 -- Return the current command string
 function Terminal:getCommand()
 	return self.command.text
