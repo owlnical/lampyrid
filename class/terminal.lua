@@ -124,6 +124,15 @@ function Terminal:interrupt()
 	self:clearCommand()
 end
 
+-- Return true if the previoius command is identical to the current command
+function Terminal:isRepeatedCommand()
+	if self.history[2] and (self.command.text == self.history[2].text) then
+		return true
+	else
+		return false
+	end
+end
+
 -- Try to execute the current command string
 -- and add it to the history table
 function Terminal:execute()
@@ -137,9 +146,8 @@ function Terminal:execute()
 		end
 		--[[ PARSE AND EXECUTE COMMAND HERE ]]--
 
-		-- If the command is identical to the previous one, just reset the string
-		-- otherwise, store it in history and start a new command
-		if self.history[2] and (self.command.text == self.history[2].text) then
+		-- Do not store identical commands in history
+		if self:isRepeatedCommand() then
 			self:clearCommand()
 		else
 			self:saveCommand()
