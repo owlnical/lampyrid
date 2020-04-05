@@ -100,10 +100,10 @@ function Terminal:interrupt()
 end
 
 -- Return true if the previoius command is identical to the current command
-function Terminal:isRepeatedCommand()
+function Terminal:isRepeatedCommand(commandstring)
 	if self.history[2] then
-		local previous = self.history[2]
-		if self.command:get() == previous:getSaved() then
+		local last = self.history[2]
+		if commandstring == last:getSaved() then
 			return true
 		end
 	else
@@ -126,7 +126,7 @@ function Terminal:execute()
 		--[[ PARSE AND EXECUTE COMMAND HERE ]]--
 
 		-- Do not store identical commands in history
-		if self:isRepeatedCommand() then
+		if self:isRepeatedCommand(commandstring) then
 			self.command:restore()
 			self:setActiveCommand(1)
 			self.command:clear()
