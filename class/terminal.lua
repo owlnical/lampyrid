@@ -1,4 +1,3 @@
-local utf8 = require("utf8")
 local class = require "lib/middleclass"
 local Terminal = class("Terminal")
 local Command = require("class/command")
