@@ -16,7 +16,7 @@ function love.load()
 	love.graphics.setFont(font.hack_regular(fontsize))
 
 	-- Main terminal
-	terminal = Terminal:new("Main Terminal")
+	terminal = Terminal:new("Main Terminal", 26)
 	terminal:printf("\nWelcome to Lampyrid v%s\n", version)
 
 	-- Shaders to emulate a crt monitor

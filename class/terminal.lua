@@ -3,8 +3,9 @@ local class = require "lib/middleclass"
 local Terminal = class("Terminal")
 local Command = require("class/command")
 
-function Terminal:initialize(name)
+function Terminal:initialize(name, max_lines)
 	self.name = name
+	self.max_lines = max_lines
 
 	-- All previous commands/output merged to a single string
 	-- does not include the current command
@@ -157,6 +158,7 @@ end
 
 function Terminal:setBuffer(text)
 	self.buffer = text
+	self:clean()
 end
 
 function Terminal:clearBuffer()
@@ -169,6 +171,15 @@ end
 
 function Terminal:printf(text, ...)
 	self.buffer = self.buffer .. string.format(text, ...)
+	self:clean()
+end
+
+-- There's only so much room in our terminal
+-- so we remove the oldest line, from the start of the string
+function Terminal:clean()
+	while select(2, self.buffer:gsub('\n', '\n')) > self.max_lines do
+		self.buffer = self.buffer:gsub("^.-\n", "", 1)
+	end
 end
 
 function Terminal:draw()
