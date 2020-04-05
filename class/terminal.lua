@@ -123,6 +123,13 @@ end
 function Terminal:execute()
 	self:printCommand()
 	if self:getCommand() then
+		-- Some commands are built in
+		local internal = {}
+		for name, cmd in pairs(internal) do
+			if self.command.text == name then
+				cmd(self)
+			end
+		end
 		--[[ PARSE AND EXECUTE COMMAND HERE ]]--
 
 		-- If the command is identical to the previous one, just reset the string
