@@ -27,6 +27,12 @@ function Terminal:initialize(name)
 	-- Style
 	self.prefix = "$"
 	self.suffix = "█"
+
+	-- Some commands are built in
+	self.built_in = {
+		clear = self.clearBuffer,
+		exit = self.exit
+	}
 end
 
 
@@ -124,11 +130,7 @@ function Terminal:execute()
 	self:printCommand()
 	if self:getCommand() then
 		-- Some commands are built in
-		local internal = {
-			clear = self.clearBuffer,
-			exit = self.exit
-		}
-		for name, cmd in pairs(internal) do
+		for name, cmd in pairs(self.built_in) do
 			if self.command.text == name then
 				cmd(self)
 			end
