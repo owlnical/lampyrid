@@ -125,7 +125,8 @@ function Terminal:execute()
 	if self:getCommand() then
 		-- Some commands are built in
 		local internal = {
-			clear = self.clearBuffer
+			clear = self.clearBuffer,
+			exit = self.exit
 		}
 		for name, cmd in pairs(internal) do
 			if self.command.text == name then
@@ -152,9 +153,7 @@ end
 
 -- Exit terminal/game
 function Terminal:exit()
-	if not self:getCommand() then
-		love.event.quit()
-	end
+	love.event.quit()
 end
 
 --[[
