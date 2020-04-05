@@ -1,5 +1,5 @@
-local utf8 = require("utf8")
-local class = require "lib/middleclass"
+local utf8 = require "utf8"
+local class = require "lib.middleclass"
 local Command = class("Command")
 
 function Command:initialize(text, saved)

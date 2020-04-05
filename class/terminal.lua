@@ -1,6 +1,6 @@
-local class = require "lib/middleclass"
+local class = require "lib.middleclass"
+local Command = require "class.command"
 local Terminal = class("Terminal")
-local Command = require("class/command")
 
 function Terminal:initialize(name, max_lines)
 	self.name = name

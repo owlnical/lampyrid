@@ -1,8 +1,8 @@
 local version = 0.2
-local cargo = require('lib/cargo')
-local moonshine = require("lib/moonshine")
-local class = require "lib/middleclass"
-local Terminal = require("class/terminal")
+local cargo = require "lib.cargo"
+local moonshine = require "lib.moonshine"
+local class = require "lib.middleclass"
+local Terminal = require "class.terminal"
 
 function love.load()
 	-- Load assets
