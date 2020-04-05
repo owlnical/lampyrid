@@ -156,11 +156,6 @@ end
 	A single string of the previoius commands, output, input etc
 --]]
 
-function Terminal:setBuffer(text)
-	self.buffer = text
-	self:clean()
-end
-
 function Terminal:clearBuffer()
 	self.buffer = ""
 end
