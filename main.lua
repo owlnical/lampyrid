@@ -66,7 +66,7 @@ function love.keypressed(key)
 	elseif ctrl and key == "c" then
 		terminal:interrupt()
 	elseif ctrl and key == "d" then
-		if not terminal:getCommand() then
+		if terminal:isEmpty() then
 			love.event.quit()
 		end
 	elseif ctrl and key == "l" then

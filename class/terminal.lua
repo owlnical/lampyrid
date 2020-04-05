@@ -1,6 +1,7 @@
 local utf8 = require("utf8")
 local class = require "lib/middleclass"
 local Terminal = class("Terminal")
+local Command = require("class/command")
 
 function Terminal:initialize(name)
 	self.name = name
@@ -14,10 +15,7 @@ function Terminal:initialize(name)
 
 	-- History of executed commands, higher is older
 	self.history = {}
-	self.history[1] = {
-		text        = "",    -- The current command string
-		as_executed = ""     -- The string when the command was executed
-	}
+	self.history[1] = Command:new()	
 
 	-- The active command is currently the newest command
 	-- this will change when the user moved up/back in history
@@ -36,7 +34,6 @@ function Terminal:initialize(name)
 end
 
 
-
 --[[
 	INPUT AND COMMANDS
 	Methods handling the current input string.
@@ -50,20 +47,19 @@ function Terminal:readInput(text)
 end
 
 function Terminal:appendInput(text)
-	self.command.text = self.command.text .. text
+	self.command:append(text)
 end
 
--- Backspace a character from current command
--- (https://love2d.org/wiki/love.textinput)
 function Terminal:backspace()
-	local byteoffset = utf8.offset(self.command.text, -1)
-	if byteoffset then
-		self.command.text = self.command.text:sub(1, byteoffset - 1)
-	end
+	self.command:backspace()
 end
 
-function Terminal:clearCommand()
-	self.command.text = ""
+function Terminal:isEmpty()
+	if self.command:isEmpty() then
+		return true
+	else
+		return false
+	end
 end
 
 -- Change active command to the specified id
@@ -84,50 +80,32 @@ function Terminal:down()
 	self:setActiveCommand(self.active_command - 1)
 end
 
--- Return the current command string
-function Terminal:getCommand()
-	if self.command.text == "" then
-		return false
-	else
-		return self.command.text
-	end
-end
-
-function Terminal:setCommand()
-
-end
-
 -- Print the command to the buffer
 function Terminal:printCommand()
-	self:print(self.command.text)
-end
-
--- add command to history
-function Terminal:saveCommand()
-	self.history[1] = {
-		text = self.command.text,
-		as_executed = self.command.text
-	}
+	self:print(self.command:get())
 end
 
 -- Add a new command entry to the top of the history table
 -- Set it as the active command
 function Terminal:newCommand()
-	table.insert(self.history, 1, {text = "", as_executed })
+	table.insert(self.history, 1, Command:new())
 	self:setActiveCommand(1)
 end
 
 -- Interrupt the current command
 function Terminal:interrupt()
 	--[[ INTERRUPT RUNNING COMMAND HERE ]]--
-	self:printf("%s %s^C\n", self.prefix, self.command.text)
-	self:clearCommand()
+	self:printf("%s %s^C\n", self.prefix, self.command:get())
+	self.command:clear()
 end
 
 -- Return true if the previoius command is identical to the current command
 function Terminal:isRepeatedCommand()
-	if self.history[2] and (self.command.text == self.history[2].text) then
-		return true
+	if self.history[2] then
+		local previous = self.history[2]
+		if self.command:get() == previous:getSaved() then
+			return true
+		end
 	else
 		return false
 	end
@@ -137,10 +115,11 @@ end
 -- and add it to the history table
 function Terminal:execute()
 	self:printCommand()
-	if self:getCommand() then
+	if not self.command:isEmpty() then
+		local commandstring = self.command:get()
 		-- Some commands are built in
 		for name, cmd in pairs(self.built_in) do
-			if self.command.text == name then
+			if commandstring == name then
 				cmd(self)
 			end
 		end
@@ -148,11 +127,19 @@ function Terminal:execute()
 
 		-- Do not store identical commands in history
 		if self:isRepeatedCommand() then
-			self:clearCommand()
+			self.command:restore()
+			self:setActiveCommand(1)
+			self.command:clear()
 		else
-			self:saveCommand()
+			self.command:restore()
+			self:setActiveCommand(1)
+			self.command:set(commandstring)
+			self.command:save()
 			self:newCommand()
 		end
+	else
+		self.command:restore()
+		self:setActiveCommand(1)
 	end
 end
 
@@ -193,7 +180,7 @@ function Terminal:draw()
 	local text = string.format("%s%s %s%s",
 		self.buffer,
 		self.prefix,
-		self.command.text,
+		self.command:get(),
 		self.suffix)
 	love.graphics.printf(text, 15, 10, 760)
 end
