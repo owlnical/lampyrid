@@ -124,7 +124,9 @@ function Terminal:execute()
 	self:printCommand()
 	if self:getCommand() then
 		-- Some commands are built in
-		local internal = {}
+		local internal = {
+			clear = self.clearBuffer
+		}
 		for name, cmd in pairs(internal) do
 			if self.command.text == name then
 				cmd(self)
