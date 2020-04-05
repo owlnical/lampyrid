@@ -114,32 +114,28 @@ end
 -- Try to execute the current command string
 -- and add it to the history table
 function Terminal:execute()
+	local commandstring = self.command:get()
 	self:printCommand()
-	if not self.command:isEmpty() then
-		local commandstring = self.command:get()
+	self.command:restore()
+	self:setActiveCommand(1)
+	self.command:clear()
+
+	if commandstring ~= "" then
 		-- Some commands are built in
 		for name, cmd in pairs(self.built_in) do
 			if commandstring == name then
 				cmd(self)
 			end
 		end
+
 		--[[ PARSE AND EXECUTE COMMAND HERE ]]--
 
-		-- Do not store identical commands in history
-		if self:isRepeatedCommand(commandstring) then
-			self.command:restore()
-			self:setActiveCommand(1)
-			self.command:clear()
-		else
-			self.command:restore()
-			self:setActiveCommand(1)
+		-- Store the command in the latest object unless it's repeated
+		if not self:isRepeatedCommand(commandstring) then
 			self.command:set(commandstring)
 			self.command:save()
 			self:newCommand()
 		end
-	else
-		self.command:restore()
-		self:setActiveCommand(1)
 	end
 end
 
