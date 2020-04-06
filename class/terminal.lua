@@ -31,6 +31,13 @@ function Terminal:initialize(name, max_lines)
 		clear = self.clearBuffer,
 		exit = self.exit
 	}
+
+	-- program thread and channels
+	self.program = love.thread.newThread("--\n")
+	self.channel = {
+		args = love.thread.getChannel("args")
+	}
+
 end
 
 
@@ -130,7 +137,16 @@ function Terminal:execute()
 			end
 		end
 
-		--[[ PARSE AND EXECUTE COMMAND HERE ]]--
+		-- start new thread with lua files in the bin directory
+		local path = "bin/" .. bin .. ".lua"
+		if love.filesystem.getInfo(path) then
+			self.program = love.thread.newThread(path)
+			if args[1] then
+				love.thread.getChannel("args"):clear()
+				love.thread.getChannel("args"):push(args)
+			end
+			self.program:start()
+		end
 
 		-- Store the command in the latest object unless it's repeated
 		if not self:isRepeatedCommand() then
