@@ -27,6 +27,10 @@ function Command:isEmpty()
 	return self.text == ""
 end
 
+function Command:notEmpty()
+	return not self:isEmpty()
+end
+
 function Command:set(text)
 	self.text = text
 end

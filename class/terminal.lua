@@ -100,9 +100,9 @@ function Terminal:interrupt()
 end
 
 -- Return true if the previoius command is identical to the current command
-function Terminal:isRepeatedCommand(commandstring)
+function Terminal:isRepeatedCommand()
 	if self.history[2] then
-		return commandstring == self.history[2]:getSaved()
+		return self.history[1]:get() == self.history[2]:getSaved()
 	end
 	return false
 end
@@ -110,29 +110,34 @@ end
 -- Try to execute the current command string
 -- and add it to the history table
 function Terminal:execute()
-	local commandstring = self.command:get()
 	self:printCommand()
-	self.command:restore()
-	self:setActiveCommand(1)
-	self.command:set(commandstring)
 
-	if commandstring ~= "" then
+	-- Any old commands need to be restored to their original value
+	if self.active_command > 1 then
+		self.history[1]:set(self.command:get())
+		self.command:restore()
+		self:setActiveCommand(1)
+	end
+
+	if self.command:notEmpty() then
+		local args = self.command:getArgs()
+
 		-- Some commands are built in
 		for name, cmd in pairs(self.built_in) do
-			if commandstring == name then
+			if self.command:get() == name then
 				cmd(self)
 			end
 		end
 
 		--[[ PARSE AND EXECUTE COMMAND HERE ]]--
-		local args = self.command:getArgs()
 
 		-- Store the command in the latest object unless it's repeated
-		if not self:isRepeatedCommand(commandstring) then
+		if not self:isRepeatedCommand() then
 			self.command:save()
 			self:newCommand()
 		end
 	end
+
 	self.command:clear()
 end
 
