@@ -142,10 +142,8 @@ function Terminal:execute()
 		local path = "bin/" .. bin .. ".lua"
 		if love.filesystem.getInfo(path) then
 			self.program = love.thread.newThread(path)
-			if args[1] then
-				love.thread.getChannel("args"):clear()
-				love.thread.getChannel("args"):push(args)
-			end
+			self.channel.args:clear()
+			self.channel.args:push(args)
 			self.program:start()
 		end
 
