@@ -104,10 +104,15 @@ function Terminal:newCommand()
 	self:setActiveCommand(1)
 end
 
--- Interrupt the current command
+-- clear the current command, interrupt running programs
 function Terminal:interrupt()
-	--[[ INTERRUPT RUNNING COMMAND HERE ]]--
-	self:printf("%s %s^C\n", self.prefix, self.command:get())
+	if self.program:isRunning() then
+		self.program:release()
+		self.program = love.thread.newThread("--\n")
+		self:printf("%s^C\n", self.command:get())
+	else
+		self:printf("%s %s^C\n", self.prefix, self.command:get())
+	end
 	self.command:clear()
 end
 
