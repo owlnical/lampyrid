@@ -35,7 +35,8 @@ function Terminal:initialize(name, max_lines)
 	-- program thread and channels
 	self.program = love.thread.newThread("--\n")
 	self.channel = {
-		args = love.thread.getChannel("args")
+		args = love.thread.getChannel("args"),
+		output = love.thread.getChannel("output")
 	}
 
 end
@@ -203,6 +204,12 @@ function Terminal:draw()
 		self.command:get(),
 		self.suffix)
 	love.graphics.printf(text, 15, 10, 760)
+end
+
+function Terminal:update()
+	while self.channel.output:getCount() > 0 do
+		self:printf(self.channel.output:pop())
+	end
 end
 
 return Terminal
