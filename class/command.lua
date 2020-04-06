@@ -54,13 +54,15 @@ function Command:getSaved()
 	return self.saved
 end
 
--- Return command args as table
+-- Split command into file/bin name and argument table
 function Command:getArgs()
+	local bin = ""
 	local args = {}
 	local insert = function(a) table.insert(args, a) end
 	self.text:gsub("%w+", insert)
+	bin = args[1]
 	table.remove(args, 1)
-	return args
+	return bin, args
 end
 
 -- Backspace a character from current command

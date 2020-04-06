@@ -120,12 +120,13 @@ function Terminal:execute()
 	end
 
 	if self.command:notEmpty() then
-		local args = self.command:getArgs()
+		-- The bin/file we want to execute and the arguments
+		local bin, args = self.command:getArgs()
 
-		-- Some commands are built in
-		for name, cmd in pairs(self.built_in) do
-			if self.command:get() == name then
-				cmd(self)
+		-- Some basic commnads are built in functions (exit, clear etc)
+		for name, func in pairs(self.built_in) do
+			if bin == name then
+				func(self)
 			end
 		end
 
