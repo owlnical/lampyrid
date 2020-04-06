@@ -1,3 +1,5 @@
 *.AppImage
 *.love
+*.so
 tests
+
