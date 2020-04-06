@@ -19,6 +19,10 @@ function Command:get()
 	return self.text
 end
 
+function Command:deleteWord()
+	self.text = self.text:gsub("^%w+%s-$",""):gsub("%s+%w+%s-$","",1)
+end
+
 function Command:isEmpty()
 	if self.text == "" then
 		return true

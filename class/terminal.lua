@@ -54,6 +54,10 @@ function Terminal:backspace()
 	self.command:backspace()
 end
 
+function Terminal:deleteWord()
+	self.command:deleteWord()
+end
+
 function Terminal:isEmpty()
 	if self.command:isEmpty() then
 		return true

@@ -71,6 +71,8 @@ function love.keypressed(key)
 		end
 	elseif ctrl and key == "l" then
 		terminal:clearBuffer()
+	elseif ctrl and key == "w" then
+		terminal:deleteWord()
 	end
 end
 
