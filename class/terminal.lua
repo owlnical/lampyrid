@@ -59,11 +59,7 @@ function Terminal:deleteWord()
 end
 
 function Terminal:isEmpty()
-	if self.command:isEmpty() then
-		return true
-	else
-		return false
-	end
+	return self.command:isEmpty()
 end
 
 -- Change active command to the specified id
@@ -106,13 +102,9 @@ end
 -- Return true if the previoius command is identical to the current command
 function Terminal:isRepeatedCommand(commandstring)
 	if self.history[2] then
-		local last = self.history[2]
-		if commandstring == last:getSaved() then
-			return true
-		end
-	else
-		return false
+		return commandstring == self.history[2]:getSaved()
 	end
+	return false
 end
 
 -- Try to execute the current command string

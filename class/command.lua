@@ -24,11 +24,7 @@ function Command:deleteWord()
 end
 
 function Command:isEmpty()
-	if self.text == "" then
-		return true
-	else
-		return false
-	end
+	return self.text == ""
 end
 
 function Command:set(text)
