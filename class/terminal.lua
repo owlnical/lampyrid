@@ -55,7 +55,11 @@ function Terminal:readInput(text)
 end
 
 function Terminal:appendInput(text)
-	self.command:append(text)
+	if self.program:isRunning() then
+		self:printf(text)
+	else
+		self.command:append(text)
+	end
 end
 
 function Terminal:backspace()
@@ -118,6 +122,10 @@ end
 -- Try to execute the current command string
 -- and add it to the history table
 function Terminal:execute()
+	if self.program:isRunning() then
+		self:printf("\n")
+		return
+	end
 	self:printCommand()
 
 	-- Any old commands need to be restored to their original value
@@ -196,11 +204,16 @@ end
 
 function Terminal:draw()
 	love.graphics.setColor(1, 1, 1)
-	local text = string.format("%s%s %s%s",
-		self.buffer,
-		self.prefix,
-		self.command:get(),
-		self.suffix)
+	local text
+	if self.program:isRunning() then
+		text = self.buffer .. self.suffix
+	else
+		text = string.format("%s%s %s%s",
+			self.buffer,
+			self.prefix,
+			self.command:get(),
+			self.suffix)
+	end
 	love.graphics.printf(text, 15, 10, 760)
 end
 
