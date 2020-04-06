@@ -50,6 +50,15 @@ function Command:getSaved()
 	return self.saved
 end
 
+-- Return command args as table
+function Command:getArgs()
+	local args = {}
+	local insert = function(a) table.insert(args, a) end
+	self.text:gsub("%w+", insert)
+	table.remove(args, 1)
+	return args
+end
+
 -- Backspace a character from current command
 -- (https://love2d.org/wiki/love.textinput)
 function Command:backspace()

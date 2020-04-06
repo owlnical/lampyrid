@@ -114,7 +114,7 @@ function Terminal:execute()
 	self:printCommand()
 	self.command:restore()
 	self:setActiveCommand(1)
-	self.command:clear()
+	self.command:set(commandstring)
 
 	if commandstring ~= "" then
 		-- Some commands are built in
@@ -125,14 +125,15 @@ function Terminal:execute()
 		end
 
 		--[[ PARSE AND EXECUTE COMMAND HERE ]]--
+		local args = self.command:getArgs()
 
 		-- Store the command in the latest object unless it's repeated
 		if not self:isRepeatedCommand(commandstring) then
-			self.command:set(commandstring)
 			self.command:save()
 			self:newCommand()
 		end
 	end
+	self.command:clear()
 end
 
 
