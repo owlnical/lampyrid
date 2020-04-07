@@ -151,6 +151,14 @@ function Terminal:execute()
 			end
 		end
 
+		-- Check if the command is an alias
+		alias = { s = "sleep" }
+		for k, v in pairs(alias) do
+			if k == bin then
+				bin = v
+			end
+		end
+
 		-- start new thread with lua files in the bin directory
 		local path = "bin/" .. bin .. ".lua"
 		if love.filesystem.getInfo(path) then
