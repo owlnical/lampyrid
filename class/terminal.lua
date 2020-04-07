@@ -152,9 +152,9 @@ function Terminal:execute()
 		end
 
 		-- Check if the command is an alias
-		alias = { s = "sleep" }
-		for k, v in pairs(alias) do
-			if k == bin then
+		alias = { s = "sleep", p = "position" }
+		for a, v in pairs(alias) do
+			if a == bin then
 				bin = v
 			end
 		end
