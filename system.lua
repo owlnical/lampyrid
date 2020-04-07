@@ -32,4 +32,14 @@ function load()
 	return ram
 end
 
+function system.get(request)
+	local _, t, k = unpack(request)
+	system.request:supply(ram[t][k])
+end
+
+function system.set(request)
+	local _, t, k, v = unpack(request)
+	ram[t][k] = v
+end
+
 main()
