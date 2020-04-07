@@ -1,7 +1,8 @@
-system = {
-	request = love.thread.getChannel("request"),
+channel = {
+	system = love.thread.getChannel("system"),
 	delta = love.thread.getChannel("delta")
 }
+system = {}
 
 function main()
 	ram = load()
@@ -9,13 +10,13 @@ function main()
 	local request
 
 	while true do
-		dt = system.delta:demand()
-		while system.request:getCount() > 0 do
-			request = system.request:pop()
+		dt = channel.delta:demand()
+		while channel.system:getCount() > 0 do
+			request = channel.system:pop()
 			if system[request[1]] then
 				system[request[1]](request)
 			else
-				system:supply(false)
+				channel.system:supply(false)
 			end
 		end
 	end
@@ -34,7 +35,7 @@ end
 
 function system.get(request)
 	local _, t, k = unpack(request)
-	system.request:supply(ram[t][k])
+	channel.system:supply(ram[t][k])
 end
 
 function system.set(request)

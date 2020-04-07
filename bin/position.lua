@@ -1,9 +1,12 @@
-request = love.thread.getChannel("request")
+system = love.thread.getChannel("system")
 output = love.thread.getChannel("output")
 
 function main()
-	request:supply({"get", "nav", "position"})
-	output:push(string.format("position %s.%s.%s\n", unpack(request:demand())))
+	system:supply({"get", "nav", "position"})
+	output:push(string.format(
+		"position %s.%s.%s\n",
+		unpack(system:demand())
+	))
 end
 
 main()
