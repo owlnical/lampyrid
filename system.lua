@@ -1,10 +1,11 @@
+delta = love.thread.getChannel("delta")
 system = love.thread.getChannel("system")
 
 function main()
 	local ram = load()
 	local dt = 0
 	while true do
-		dt = system:demand()
+		dt = delta:demand()
 	end
 end
 

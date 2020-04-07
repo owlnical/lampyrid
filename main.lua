@@ -22,7 +22,7 @@ function love.load()
 	-- System thread for game state etc
 	system = {
 		thread = love.thread.newThread("system.lua"),
-		channel = love.thread.getChannel("system")
+		delta = love.thread.getChannel("delta")
 	}
 	system.update = function(dt) system.channel:supply(dt) end
 	system.thread:start()
@@ -52,7 +52,7 @@ end
 
 function love.update(dt)
 	terminal:update()
-	system.update(dt)
+	system.delta:supply(dt)
 
 	-- Subtle scanlines flickr
 	shader.scanlines.width = love.math.random(2, 3)
