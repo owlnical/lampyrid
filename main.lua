@@ -19,6 +19,12 @@ function love.load()
 	terminal = Terminal:new("Main Terminal", 26)
 	terminal:printf("\nWelcome to Lampyrid v%s\n", version)
 
+	-- System thread for game state etc
+	system = {
+		thread = love.thread.newThread("system.lua")
+	}
+	system.thread:start()
+
 	-- Shaders to emulate a crt monitor
 	shader = moonshine(moonshine.effects.scanlines)
 		.chain(moonshine.effects.vignette)
