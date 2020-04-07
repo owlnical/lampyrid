@@ -1,5 +1,11 @@
+system = love.thread.getChannel("system")
+
 function main()
 	local ram = load()
+	local dt = 0
+	while true do
+		dt = system:demand()
+	end
 end
 
 function load()

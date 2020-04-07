@@ -21,8 +21,10 @@ function love.load()
 
 	-- System thread for game state etc
 	system = {
-		thread = love.thread.newThread("system.lua")
+		thread = love.thread.newThread("system.lua"),
+		channel = love.thread.getChannel("system")
 	}
+	system.update = function(dt) system.channel:supply(dt) end
 	system.thread:start()
 
 	-- Shaders to emulate a crt monitor
@@ -50,6 +52,8 @@ end
 
 function love.update(dt)
 	terminal:update()
+	system.update(dt)
+
 	-- Subtle scanlines flickr
 	shader.scanlines.width = love.math.random(2, 3)
 end
