@@ -31,4 +31,8 @@ function sys.get(t, k)
 	return sys.channel.system:demand()
 end
 
+function sys.uget(t, k)
+	return unpack(sys.get(t, k))
+end
+
 return sys

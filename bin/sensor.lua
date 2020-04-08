@@ -13,7 +13,7 @@ function main()
 end
 
 function sensor.position()
-	print("Position:", unpack(sys.get("nav", "position")))
+	print("Position:", sys.uget("nav", "position"))
 end
 sensor.pos = sensor.position
 
