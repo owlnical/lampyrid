@@ -1,5 +1,4 @@
 system = love.thread.getChannel("system")
-output = love.thread.getChannel("output")
 local sys = require "bin.lib.sys"
 local sensor = {}
 
@@ -9,7 +8,7 @@ function main()
 	if subcommand and sensor[subcommand] then
 		sensor[subcommand]()
 	else
-		output:push("sensor: unknown argument\n")
+		print("sensor: unknown argument")
 	end
 end
 
