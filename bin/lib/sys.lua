@@ -52,4 +52,15 @@ function sys.uget(t, k)
 	return unpack(sys.get(t, k))
 end
 
+function sys.validate_coords(c)
+	local x = tonumber(c[1])
+	local y = tonumber(c[2])
+	local z = tonumber(c[3])
+	if x and y and z then
+		return {x, y, z}, x, y, z
+	else
+		return false
+	end
+end
+
 return sys

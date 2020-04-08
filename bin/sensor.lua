@@ -17,19 +17,17 @@ function sensor.position()
 end
 
 function sensor.destination(args)
-	local cmd, arg = sys.to_cmd_args(args)
+	local cmd, args = sys.to_cmd_args(args)
 
 	if cmd == "set" then
-		local x = tonumber(arg[1])
-		local y = tonumber(arg[2])
-		local z = tonumber(arg[3])
-		if x and y and z then
-			sys.set("nav", "destination", arg)
-			print("Destination changed to", x, y, z)
+		local coords, x, y, z = sys.validate_coords(args)
+		if coords then
+			sys.set("nav", "destination", coords)
+			print("Destination changed to:", x, y, z)
 		else
-			print("Error: invalid destination:", x, y, z)
+			print("Error: invalid destination")
 		end
-	elseif args[1] == nil then
+	elseif not cmd then
 		print("Destination:", sys.uget("nav", "destination"))
 	end
 end
