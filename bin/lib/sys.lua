@@ -26,4 +26,9 @@ function sys.printf(...)
 	sys.channel.output:push(string.format(...))
 end
 
+function sys.get(t, k)
+	sys.channel.system:supply({"get", t, k})
+	return sys.channel.system:demand()
+end
+
 return sys
