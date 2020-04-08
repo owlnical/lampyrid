@@ -4,9 +4,9 @@ local sensor = {}
 
 function main()
 	print = sys.print
-	local subcommand = sys.unpack_args()
-	if subcommand and sensor[subcommand] then
-		sensor[subcommand]()
+	local cmd, args = sys.get_cmd_args()
+	if cmd and sensor[cmd] then
+		sensor[cmd](args)
 	else
 		print("sensor: unknown argument")
 	end
