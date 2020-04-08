@@ -17,5 +17,6 @@ function sensor.position()
 	system:supply({"get", "nav", "position"})
 	print("Position:", unpack(system:demand()))
 end
+sensor.pos = sensor.position
 
 main()
