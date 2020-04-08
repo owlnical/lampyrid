@@ -1,12 +1,13 @@
 system = love.thread.getChannel("system")
 args = love.thread.getChannel("args")
 output = love.thread.getChannel("output")
+local sys = require "bin.lib.sys"
 local sensor = {}
 
 function main()
-	local a = args:demand()
-	if a[1] and sensor[a[1]] then
-		sensor[a[1]](a)
+	local subcommand = sys.unpack_args()
+	if subcommand and sensor[subcommand] then
+		sensor[subcommand]()
 	else
 		output:push("sensor: unknown argument\n")
 	end
