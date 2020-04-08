@@ -11,6 +11,9 @@ function main()
 
 	while true do
 		dt = channel.delta:demand()
+
+		-- Match requests no func in the system table
+		-- e.g. { "get", "nav", "position" }
 		while channel.system:getCount() > 0 do
 			request = channel.system:pop()
 			if system[request[1]] then
@@ -22,8 +25,10 @@ function main()
 	end
 end
 
+-- Restore game state from file
 function load()
 	--[[ ACTUALLY LOAD GAME ]]--
+	-- Hardcoded test data
 	local ram = {
 		nav = {
 			position = {0, 0, 0},
@@ -33,11 +38,13 @@ function load()
 	return ram
 end
 
+-- push requested data from ram to the system channel
 function system.get(request)
 	local _, t, k = unpack(request)
 	channel.system:supply(ram[t][k])
 end
 
+-- set ram value from request
 function system.set(request)
 	local _, t, k, v = unpack(request)
 	ram[t][k] = v
