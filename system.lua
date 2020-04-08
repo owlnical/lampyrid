@@ -32,7 +32,7 @@ function load()
 	local ram = {
 		nav = {
 			position = {0, 0, 0},
-			destination = {0, 0, 0}
+			destination = {100, 100, 100}
 		}
 	}
 	return ram
