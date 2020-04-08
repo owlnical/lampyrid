@@ -44,6 +44,10 @@ function sys.get(t, k)
 	return sys.channel.system:demand()
 end
 
+function sys.set(t, k, v)
+	sys.channel.system:supply({"set", t, k, v})
+end
+
 function sys.uget(t, k)
 	return unpack(sys.get(t, k))
 end
