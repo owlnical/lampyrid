@@ -14,6 +14,19 @@ function sys.unpack_args()
 	return unpack(sys.get_args())
 end
 
+function sys.get_cmd_args()
+	local args = sys.get_args()
+	local cmd = args[1]
+	table.remove(args, 1)
+	return cmd, args
+end
+
+function sys.to_cmd_args(args)
+	local cmd = args[1]
+	table.remove(args, 1)
+	return cmd, args
+end
+
 function sys.print(...)
 	local text = ""
 	for _, v in ipairs({...}) do
