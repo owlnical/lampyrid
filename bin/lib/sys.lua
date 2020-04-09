@@ -70,8 +70,8 @@ function sys.run_program(program)
 	if cmd and program[cmd] then
 		program[cmd](args)
 	elseif cmd then
-		sys.print("Error: unknown argument")
-	else
+		print("Error: unknown argument: " .. cmd)
+	elseif program.default then
 		program.default()
 	end
 end
