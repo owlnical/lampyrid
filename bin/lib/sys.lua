@@ -63,4 +63,17 @@ function sys.validate_coords(c)
 	end
 end
 
+function sys.run_program(program)
+	local cmd, args = sys.get_cmd_args()
+	print = sys.print
+
+	if cmd and program[cmd] then
+		program[cmd](args)
+	elseif cmd then
+		sys.print("Error: unknown argument")
+	else
+		program.default()
+	end
+end
+
 return sys
