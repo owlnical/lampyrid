@@ -31,7 +31,7 @@ end
 
 function engine.stop()
 	sys.set("engine", "engaged", false)
-	print("Engine: stopeed")
+	print("Engine: stopped")
 end
 
 -- short
