@@ -116,14 +116,6 @@ function Terminal:interrupt()
 	self.command:clear()
 end
 
--- Return true if the previoius command is identical to the current command
-function Terminal:isRepeatedCommand()
-	if self.history[2] then
-		return self.history[1]:get() == self.history[2]:getSaved()
-	end
-	return false
-end
-
 -- Try to execute the current command string
 -- and add it to the history table
 function Terminal:execute()
@@ -168,8 +160,8 @@ function Terminal:execute()
 			self.program:start()
 		end
 
-		-- Store the command in the latest object unless it's repeated
-		if not self:isRepeatedCommand() then
+		-- If this command is different from the last, save it
+		if self.command ~= self.history[2] then
 			self.command:save()
 			self:newCommand()
 		end
