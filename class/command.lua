@@ -7,6 +7,10 @@ function Command:initialize(text, saved)
 	self.saved = saved or ""
 end
 
+function Command:__eq(cmd)
+	return self.text == cmd.saved
+end
+
 function Command:append(text)
 	self.text = self.text .. text
 end
