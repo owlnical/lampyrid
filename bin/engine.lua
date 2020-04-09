@@ -1,18 +1,5 @@
-system = love.thread.getChannel("system")
-local sys = require "bin.lib.sys"
-local engine = {}
-
-function main()
-	print = sys.print
-	local cmd, args = sys.get_cmd_args()
-	if cmd and engine[cmd] then
-		engine[cmd](args)
-	elseif cmd then
-		print("engine: unknown argument")
-	else
-		engine.default()
-	end
-end
+sys = require "bin.lib.sys"
+engine = {}
 
 function engine.status()
 	local status = sys.get("engine", "engaged")
@@ -37,4 +24,5 @@ end
 -- short
 engine.default = engine.status
 
-main()
+-- Run program with generic handler
+sys.run_program(engine)
