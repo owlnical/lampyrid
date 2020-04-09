@@ -21,6 +21,11 @@ function sensor.destination(args)
 	end
 end
 
+function sensor.default()
+	print("Position:", sys.uget("nav", "position"))
+	print("Destination:", sys.uget("nav", "destination"))
+end
+
 -- short
 sensor.pos = sensor.position
 sensor.dest = sensor.destination
