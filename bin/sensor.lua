@@ -1,5 +1,9 @@
 local sys = require "bin.lib.sys"
-local sensor = {}
+local sensor = {
+	_NAME = "Sensor",
+	_VERSION = "0.1",
+	_HELP = "Interact with the ships sensors"
+}
 
 function sensor.position()
 	print("Position:", sys.uget("nav", "position"))

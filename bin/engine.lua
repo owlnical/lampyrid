@@ -1,5 +1,9 @@
 sys = require "bin.lib.sys"
-engine = {}
+engine = {
+	_NAME = "Engine",
+	_VERSION = "0.1",
+	_HELP = "Interact with the ships engine"
+}
 
 function engine.status()
 	local status = sys.get("engine", "engaged")

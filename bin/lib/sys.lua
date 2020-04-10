@@ -69,6 +69,10 @@ function sys.run_program(program)
 
 	if cmd and program[cmd] then
 		program[cmd](args)
+	elseif cmd == "help" then
+		print(program._HELP)
+	elseif cmd == "version" then
+		print(program._NAME .. " v" .. program._VERSION)
 	elseif cmd then
 		print("Error: unknown argument: " .. cmd)
 	elseif program.default then
