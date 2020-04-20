@@ -20,6 +20,8 @@ The entire thing is built with [LÖVE](https://love2d.org) and the following lib
 - [middleclass](https://github.com/kikito/middleclass)
 - [cargo](https://github.com/bjornbytes/cargo/)
 - [Cirno's Perfect Math Library](https://github.com/excessive/cpml)
+- [töve](https://github.com/poke1024/tove2d)
+- [LuaSVGWriter](https://gitlab.com/hansonry/luasvgwriter)
 
 ### Assets
 
