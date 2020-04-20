@@ -13,8 +13,14 @@ What I'd like to implement is some sort of economy/trading system and allow the 
 
 All [releases](https://github.com/owlnical/lampyrid/) currently requires [LÖVE](https://love2d.org/). Future, more feature complete versions, will include the framework.
 
+### Libraries
+
+The entire thing is built with [LÖVE](https://love2d.org) and the following libraries:
+
+- [middleclass](https://github.com/kikito/middleclass)
+- [cargo](https://github.com/bjornbytes/cargo/)
+- [Cirno's Perfect Math Library](https://github.com/excessive/cpml)
+
 ### Assets
 
 - The terminal font is [Hack Regular](https://github.com/source-foundry/Hack)
-- The planet images are generate with [PlanetMaker](http://planetmaker.wthr.us/#)
-- The particles systems was created with [Particle Edit 0.9.1](https://love2d.org/forums/viewtopic.php?f=4&t=2110&sid=9b94cfedb0666c26e713e599794d9fca&start=17)
