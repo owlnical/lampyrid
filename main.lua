@@ -3,6 +3,7 @@ local cargo = require "lib.cargo"
 local moonshine = require "lib.moonshine"
 local class = require "lib.middleclass"
 local Terminal = require "class.terminal"
+local Planet = require "class.planet"
 
 function love.load()
 	-- Load assets
@@ -39,6 +40,23 @@ function love.load()
 		godsray = {exposure = 0.01 },
 		vignette = {opacity = 0.1}
 	}
+
+	-- Planet name files to arrays
+	local name = { prefix = {}, main = {}, suffix = {} }
+	local planet_names = cargo.init("assets/planet-names")
+	for _, list in pairs(name) do
+		for s in string.gmatch(planet_names.main, ".-\n") do
+			list[#list+1] = s:gsub("\n","")
+		end
+	end
+
+	-- Generate planets based on current time
+	planet = {}
+	local seed = os.time()
+	for i = 1, 1000 do
+		seed = seed + 1
+		planet[i] = Planet:new(seed, name)
+	end
 end
 
 function love.draw()
