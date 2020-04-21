@@ -65,6 +65,12 @@ function Planet:genSVG()
 	end
 	--]]
 
+	-- Gradient
+	style:setFill(lsw.LinearGradient:new("black"))
+	style:setOpacity(self:random(0.9, 1))
+	svg:addCircle(conf.x, conf.y, conf.r):setStyle(style)
+	--]]
+
 	-- Black border overlay
 	local mask = [[
 	<path
