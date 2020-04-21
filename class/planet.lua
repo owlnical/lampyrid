@@ -58,6 +58,17 @@ function Planet:genSVG()
 	end
 	--]]
 
+	-- Stripes
+	if self:random() > 0.8 then
+		style:setFill("black")
+		for i=1, self:random(3, 13) do
+			style:setOpacity(self:random(0.4, 0.6))
+			local x1, y1, x2, y2, x3, y3, x4, y4 = self:genStripe(conf.r)
+			svg:addPolygon():add(x1, y1):add(x2, y2):add(x3, y3):add(x4, y4):setStyle(style)
+		end
+	end
+	--]]
+
 	-- Black border overlay
 	local mask = [[  <path
      d="M 0 0 L 0 50 L 50 50 L 50 0 L 0 0 z M 24.964844 10.099609 A 14.9 14.9 0 0 1 25 10.099609 A 14.9 14.9 0 0 1 39.900391 25 A 14.9 14.9 0 0 1 25 39.900391 A 14.9 14.9 0 0 1 10.099609 25 A 14.9 14.9 0 0 1 24.964844 10.099609 z "
@@ -96,6 +107,15 @@ function Planet:genTriangle(x, y, r)
 	local x2, y2 = self:random(x1-range,x1+range),self:random(y1-range,y1+range)
 	local x3, y3 = self:random(x2-range,x2+range),self:random(y2-range,y2+range)
 	return x1, y1, x2, y2, x3, y3
+end
+
+function Planet:genStripe(r)
+	local range = 3
+	local x1, y1 = self:random(0, 10), self:random(10, r*2+10)        -- top left
+	local x2, y2 = self:random(r*2+10,r*2+20), self:random(y1-3,y1+3) -- top right
+	local x3, y3 = self:random(r*2+10,r*2+20), self:random(y2,y2+3)   -- bottom right
+	local x4, y4 = self:random(0, 10), self:random(y1+1,y3)           -- bottom left
+	return x1, y1, x2, y2, x3, y3, x4, y4
 end
 
 function Planet:getPosition()
