@@ -45,19 +45,18 @@ function Planet:genSVG()
 	local svg = lsw.Document:new(conf.canvas.size, conf.canvas.size)
 
 	-- background
-	local style = {
-		fill = self:genColor(conf.color),
-		opacity = 1
-	}
-	svg:add(lsw.Circle:new(style, conf.x, conf.y, conf.r))
+	local style = lsw.Style:new()
+	style:setFill(self:genColor(conf.color), 1)
+	svg:addCircle(conf.x, conf.y, conf.r):setStyle(style)
 
 	-- Texture
-	style.opacity = 0.5
+	style:setOpacity(0.5)
 	for i=1, 1000 do
-		style.fill = self:genColor(conf.color)
+		style:setFill(self:genColor(conf.color))
 		local x1, y1, x2, y2, x3, y3 = self:genTriangle(conf.x, conf.y, conf.r)
-		svg:addPolyline(style):add(x1, y1):add(x2, y2):add(x3, y3)
+		svg:addPolygon():add(x1, y1):add(x2, y2):add(x3, y3):setStyle(style)
 	end
+	--]]
 
 	-- Black border overlay
 	local mask = [[  <path
