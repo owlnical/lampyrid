@@ -17,10 +17,11 @@ function Planet:genSVG()
 	--self.doc()
 	local hue_base = self:random(0.01, 0.85)
 	local conf = {
-		size = 30,
-		r = 15,
-		x = 25,
-		y = 25,
+		size = 300,
+		canvas = 500,
+		r = 150,
+		x = 250,
+		y = 250,
 		color = {
 			hue= {
 				hue_base,
@@ -35,14 +36,9 @@ function Planet:genSVG()
 				0.6
 			}
 		},
-		canvas = {
-			size = 50,
-			cx = 25,
-			cy = 25
-		}
 	}
 
-	local svg = lsw.Document:new(conf.canvas.size, conf.canvas.size)
+	local svg = lsw.Document:new(conf.canvas, conf.canvas)
 
 	-- background
 	local style = lsw.Style:new()
@@ -70,11 +66,13 @@ function Planet:genSVG()
 	--]]
 
 	-- Black border overlay
-	local mask = [[  <path
-     d="M 0 0 L 0 50 L 50 50 L 50 0 L 0 0 z M 24.964844 10.099609 A 14.9 14.9 0 0 1 25 10.099609 A 14.9 14.9 0 0 1 39.900391 25 A 14.9 14.9 0 0 1 25 39.900391 A 14.9 14.9 0 0 1 10.099609 25 A 14.9 14.9 0 0 1 24.964844 10.099609 z "
-     style="fill:#000000"
-     id="rect2864" />
-</svg>]]
+	local mask = [[
+	<path
+    d="M 0 0 L 0 500 L 500 500 L 500 0 L 0 0 z M 250.5 100.5 A 150 150 0 0 1 400.5 250.5 A 150 150 0 0 1 250.5 400.5 A 150 150 0 0 1 100.5 250.5 A 150 150 0 0 1 250.5 100.5 z "
+    style="fill:#000000;stroke:none;stroke-width:14.0131"
+    id="rect2854" />
+	</svg>
+	]]
 	self.svg = svg:createText()
 	self.svg = self.svg:gsub("</svg>", mask)
 
@@ -102,7 +100,7 @@ function Planet:genPoint(cx, cy, r)
 end
 
 function Planet:genTriangle(x, y, r)
-	local range = 5
+	local range = r/3
 	local x1, y1 = self:genPoint(x, y, r)
 	local x2, y2 = self:random(x1-range,x1+range),self:random(y1-range,y1+range)
 	local x3, y3 = self:random(x2-range,x2+range),self:random(y2-range,y2+range)
