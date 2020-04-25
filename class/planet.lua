@@ -15,7 +15,7 @@ end
 
 function Planet:genSVG()
 	--self.doc()
-	local hue_base = self:random(0.01, 0.85)
+	local hue_base = self:random(-0.1, 0.90)
 	local conf = {
 		size = 1200,
 		border = 400,
@@ -26,15 +26,15 @@ function Planet:genSVG()
 		color = {
 			hue= {
 				hue_base,
-				hue_base + self:random(0.05, 0.15)
+				hue_base + self:random(0, 0.15)
 			},
 			sat = {
-				0.1,
-				1
+				self:random(0.4, 0.7),
+				self:random(0.7, 1)
 			},
 			light = {
-				0.25,
-				0.6
+				self:random(0.25, 0.5),
+				self:random(0.5, 0.75)
 			}
 		},
 	}
