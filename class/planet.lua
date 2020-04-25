@@ -17,11 +17,12 @@ function Planet:genSVG()
 	--self.doc()
 	local hue_base = self:random(0.01, 0.85)
 	local conf = {
-		size = 300,
-		canvas = 500,
-		r = 150,
-		x = 250,
-		y = 250,
+		size = 1200,
+		border = 400,
+		canvas = 2000,
+		r = 600,
+		x = 1000,
+		y = 1000,
 		color = {
 			hue= {
 				hue_base,
@@ -65,6 +66,9 @@ function Planet:genSVG()
 	end
 	--]]
 
+	-- Placeholder rect for custom mask inserted Before gradients
+	svg:addRect(-5)
+
 	-- Gradient
 	local x, y = conf.border - 1, conf.border - 1
 	local w, h = conf.size + 2, conf.size + 2
@@ -83,17 +87,56 @@ function Planet:genSVG()
 
 	-- Black border overlay
 	local mask = [[
-	<path
-    d="M 0 0 L 0 500 L 500 500 L 500 0 L 0 0 z M 250.5 100.5 A 150 150 0 0 1 400.5 250.5 A 150 150 0 0 1 250.5 400.5 A 150 150 0 0 1 100.5 250.5 A 150 150 0 0 1 250.5 100.5 z "
-    style="fill:#000000;stroke:none;stroke-width:14.0131"
-    id="rect2854" />
-	</svg>
+  <defs>
+    <linearGradient
+       id="mask-gradient">
+      <stop
+         offset="0"
+         style="stop-color:#ff1717;stop-opacity:0"
+         id="stop4872" />
+      <stop
+         id="stop4950"
+         style="stop-color:#7f0b0b;stop-opacity:0"
+         offset="0.55797428" />
+      <stop
+         offset="0.59"
+         style="stop-color:#fff9f9;stop-opacity:0.5"
+         id="stop4954" />
+      <stop
+         offset="0.6"
+         style="stop-color:#000000;stop-opacity:1"
+         id="stop4952" />
+      <stop
+         offset="1"
+         style="stop-color:#000000;stop-opacity:1"
+         id="stop4874" />
+    </linearGradient>
+    <radialGradient
+       gradientTransform="translate(-1.6953125e-5,2.5390625e-5)"
+       gradientUnits="userSpaceOnUse"
+       r="%d"
+       fy="%d"
+       fx="%d"
+       cy="%d"
+       cx="%d"
+       id="radialGradient4958"
+       xlink:href="#mask-gradient" />
+  </defs>
+  <rect
+     y="0"
+     x="0"
+     height="%d"
+     width="%d"
+     id="mask"
+     style="opacity:1;fill:url(#radialGradient4958);fill-opacity:1;stroke:none;stroke-width:334.611;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.0355919" />
 	]]
+	mask = mask:format(conf.x, conf.x, conf.x, conf.x, conf.x, conf.canvas, conf.canvas)
 	self.svg = svg:createText()
-	self.svg = self.svg:gsub("</svg>", mask)
+	self.svg = self.svg:gsub('<rect x="%-5".->', mask)
 
 	-- We're done here
 	love.filesystem.write(self.seed .. ".svg", self.svg)
+	love.filesystem.write("latest.svg", self.svg)
 end
 
 function Planet:genColor(hsl)
