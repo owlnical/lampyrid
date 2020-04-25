@@ -85,6 +85,15 @@ function Planet:genSVG()
 	end
 	--]]
 
+	-- Stars
+	style:setFill("white")
+	for i=1, self:random(500, 1500) do
+		style:setOpacity(self:random(0.8, 1))
+		local x, y = self:genStar(conf.canvas, conf.r)
+		svg:addCircle(x, y, self:random()*3):setStyle(style)
+	end
+
+
 	-- Black border overlay
 	local mask = [[
   <defs>
@@ -158,6 +167,18 @@ function Planet:genPoint(cx, cy, r)
 	return x, y
 end
 
+function Planet:genStar(canvas, r)
+	local cx, cy = canvas/2, canvas/2
+	local sx, sy
+	while true do
+		sx, sy = self:random(0, canvas), self:random(0, canvas)
+		if math.dist(sx,sy, cx,cy)  > r then
+			return sx, sy
+		end
+	end
+end
+
+
 function Planet:genTriangle(x, y, r)
 	local range = r/3
 	local x1, y1 = self:genPoint(x, y, r)
@@ -198,5 +219,8 @@ function Planet:random(l, h)
 	end
 end
 
+function math.dist(x1,y1, x2,y2)
+	return ((x2-x1)^2+(y2-y1)^2)^0.5
+end
 
 return Planet
