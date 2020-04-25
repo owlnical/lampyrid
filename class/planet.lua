@@ -66,9 +66,19 @@ function Planet:genSVG()
 	--]]
 
 	-- Gradient
-	style:setFill(lsw.LinearGradient:new("black"))
-	style:setOpacity(self:random(0.9, 1))
-	svg:addCircle(conf.x, conf.y, conf.r):setStyle(style)
+	local x, y = conf.border - 1, conf.border - 1
+	local w, h = conf.size + 2, conf.size + 2
+	local angle = self:random(1, 360)
+	local gradient = lsw.LinearGradient:new("black")
+
+	style:setFill(gradient)
+	for i=1, self:random(1,3) do
+		style:setOpacity(self:random(0.8, 1))
+		svg:addRect(x, y, w, h):
+			setStyle(style):
+			rotate(self:random(angle-10, angle+10), conf.x, conf.y
+		)
+	end
 	--]]
 
 	-- Black border overlay
