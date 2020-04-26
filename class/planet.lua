@@ -17,12 +17,12 @@ function Planet:genSVG()
 	--self.doc()
 	local hue_base = self:random(-0.1, 0.90)
 	local conf = {
-		size = 1200,
-		border = 400,
-		canvas = 2000,
-		r = 600,
-		x = 1000,
-		y = 1000,
+		w = 800,
+		h = 600,
+		size = 400,
+		r = 200,
+		x = 400,
+		y = 300,
 		color = {
 			hue= {
 				hue_base,
@@ -39,7 +39,7 @@ function Planet:genSVG()
 		},
 	}
 
-	local svg = lsw.Document:new(conf.canvas, conf.canvas)
+	local svg = lsw.Document:new(conf.w, conf.h)
 
 	-- background
 	local style = lsw.Style:new()
@@ -60,7 +60,7 @@ function Planet:genSVG()
 		style:setFill("black")
 		for i=1, self:random(3, 13) do
 			style:setOpacity(self:random(0.4, 0.6))
-			local x1, y1, x2, y2, x3, y3, x4, y4 = self:genStripe(conf.r, conf.canvas)
+			local x1, y1, x2, y2, x3, y3, x4, y4 = self:genStripe(conf.r, conf.w, conf.h, conf.x, conf.y)
 			svg:addPolygon():add(x1, y1):add(x2, y2):add(x3, y3):add(x4, y4):setStyle(style)
 		end
 	end
@@ -70,7 +70,7 @@ function Planet:genSVG()
 	svg:addRect(-5)
 
 	-- Gradient
-	local x, y = conf.border - 1, conf.border - 1
+	local x, y = conf.x - conf.r - 1, conf.y - conf.r - 1
 	local w, h = conf.size + 2, conf.size + 2
 	local angle = self:random(1, 360)
 	local gradient = lsw.LinearGradient:new("black")
@@ -89,57 +89,63 @@ function Planet:genSVG()
 	style:setFill("white")
 	for i=1, self:random(500, 1500) do
 		style:setOpacity(self:random(0.8, 1))
-		local x, y = self:genStar(conf.canvas, conf.r)
-		svg:addCircle(x, y, self:random()*3):setStyle(style)
+		local x, y = self:genStar(conf.x, conf.y, conf.r, conf.w, conf.h)
+		svg:addCircle(x, y, self:random(0, conf.r/250)):setStyle(style)
 	end
 
 
 	-- Black border overlay
 	local mask = [[
-  <defs>
+  <defs
+     id="defs2042">
     <linearGradient
        id="mask-gradient">
       <stop
-         offset="0"
+         id="stop4872"
          style="stop-color:#ff1717;stop-opacity:0"
-         id="stop4872" />
+         offset="0" />
       <stop
-         id="stop4950"
+         offset="0.55797428"
          style="stop-color:#7f0b0b;stop-opacity:0"
-         offset="0.55797428" />
+         id="stop4950" />
       <stop
-         offset="0.59"
+         id="stop4954"
          style="stop-color:#fff9f9;stop-opacity:0.5"
-         id="stop4954" />
+         offset="0.59" />
       <stop
-         offset="0.6"
+         id="stop4952"
          style="stop-color:#000000;stop-opacity:1"
-         id="stop4952" />
+         offset="0.6" />
       <stop
-         offset="1"
+         id="stop4874"
          style="stop-color:#000000;stop-opacity:1"
-         id="stop4874" />
+         offset="1" />
     </linearGradient>
     <radialGradient
-       gradientTransform="translate(-1.6953125e-5,2.5390625e-5)"
-       gradientUnits="userSpaceOnUse"
-       r="%d"
-       fy="%d"
-       fx="%d"
-       cy="%d"
-       cx="%d"
+       xlink:href="#mask-gradient"
        id="radialGradient4958"
-       xlink:href="#mask-gradient" />
+       cx="%d"
+       cy="%d"
+       fx="%d"
+       fy="%d"
+       r="%d"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.83400118,0,0,0.83743359,66.399515,48.803407)" />
   </defs>
   <rect
-     y="0"
-     x="0"
-     height="%d"
-     width="%d"
+     style="opacity:1;fill:url(#radialGradient4958);fill-opacity:1;stroke:none"
      id="mask"
-     style="opacity:1;fill:url(#radialGradient4958);fill-opacity:1;stroke:none;stroke-width:334.611;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.0355919" />
+     width="%d"
+     height="%d"
+     x="0"
+     y="0" />
 	]]
-	mask = mask:format(conf.x, conf.x, conf.x, conf.x, conf.x, conf.canvas, conf.canvas)
+	mask = mask:format(
+		conf.x, conf.y, -- cx, cy
+		conf.x, conf.y, -- fx, fy
+		conf.size, conf.w, conf.h
+	)
+
 	self.svg = svg:createText()
 	self.svg = self.svg:gsub('<rect x="%-5".->', mask)
 
@@ -148,14 +154,12 @@ function Planet:genSVG()
 	love.filesystem.write("latest.svg", self.svg)
 end
 
+-- Return random HSL from high/low base range
 function Planet:genColor(hsl)
-	hl, hh = unpack(hsl.hue)
-	sl, sh = unpack(hsl.sat)
-	ll, lh = unpack(hsl.light)
 	return lsw.Color.HSL(
-		self:random(hl, hh),
-		self:random(sl, sh),
-		self:random(ll, lh)
+		self:random(unpack(hsl.hue)),
+		self:random(unpack(hsl.sat)),
+		self:random(unpack(hsl.light))
 	)
 end
 
@@ -167,11 +171,10 @@ function Planet:genPoint(cx, cy, r)
 	return x, y
 end
 
-function Planet:genStar(canvas, r)
-	local cx, cy = canvas/2, canvas/2
+function Planet:genStar(cx, cy, r, w, h)
 	local sx, sy
 	while true do
-		sx, sy = self:random(0, canvas), self:random(0, canvas)
+		sx, sy = self:random(0, w), self:random(0, h)
 		if math.dist(sx,sy, cx,cy)  > r then
 			return sx, sy
 		end
@@ -187,19 +190,26 @@ function Planet:genTriangle(x, y, r)
 	return x1, y1, x2, y2, x3, y3
 end
 
-function Planet:genStripe(r, canvas)
-	local border = (canvas - r*2) / 2
+function Planet:genStripe(r, w, h, x, y)
 	local size = r*2
 	local range = r/8
+
+	-- Left points
+	local lx1, lx2 = x-r-50, x-r-5
+	local ly1, ly2 = y-r, y+r
+
+	-- Right points
+	local rx1, rx2 = x+r, x+r+50
+	local ry1, ry2 = y-r, y+r
 
 	--   ___
 	-- 1/   \2
 	-- 4\   /3
 	--   ¯¯¯
-	local x1, y1 = self:random(0, border), self:random(border, size+border)
-	local x2, y2 = self:random(size+border,size+border*2), self:random(y1-range,y1+range)
-	local x3, y3 = self:random(size+border,size+border*2), self:random(y2,y2+range)
-	local x4, y4 = self:random(0, border), self:random(y1+1,y3)
+	local x1, y1 = self:random(lx1, lx2), self:random(ly1, ly2)
+	local x2, y2 = self:random(rx1, rx2), self:random(y1-range,y1+range)
+	local x3, y3 = self:random(rx1, rx2), self:random(y2,y2+range)
+	local x4, y4 = self:random(lx1, lx2), self:random(y1+1,y3)
 	return x1, y1, x2, y2, x3, y3, x4, y4
 end
 
