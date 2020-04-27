@@ -14,8 +14,23 @@ function Planet:initialize(seed, name)
 end
 
 function Planet:genSVG()
-	--self.doc()
-	local hue_base = self:random(-0.1, 0.90)
+	local hue_low, hue_high, sat_low, sat_high, light_low, light_high
+	local color_scheme = self:random(1,2)
+	if color_scheme == 1 then
+		hue_low    = self:random(0, 0.80)
+		hue_high   = hue_low + self:random(0, 0.2)
+		sat_low    = self:random(0, 0.8)
+		sat_high   = self:random(0.5, 1)
+		light_low  = self:random(0, 0.5)
+		light_high = self:random(0.5, 1)
+	else
+		hue_low    = self:random(-0.1, 0.90)
+		hue_high   = hue_low + self:random(0, 0.15)
+		sat_low    = self:random(0.4, 0.7)
+		sat_high   = self:random(0.7, 1)
+		light_low  = self:random(0.25, 0.5)
+		light_high = self:random(0.5, 0.75)
+	end
 	local conf = {
 		w = 800,
 		h = 600,
@@ -24,20 +39,12 @@ function Planet:genSVG()
 		x = 400,
 		y = 300,
 		color = {
-			hue= {
-				hue_base,
-				hue_base + self:random(0, 0.15)
-			},
-			sat = {
-				self:random(0.4, 0.7),
-				self:random(0.7, 1)
-			},
-			light = {
-				self:random(0.25, 0.5),
-				self:random(0.5, 0.75)
-			}
-		},
+			hue = { hue_low, hue_high },
+			sat = { sat_low, sat_high },
+			light = { light_low, light_high }
+		}
 	}
+
 
 	local svg = lsw.Document:new(conf.w, conf.h)
 
