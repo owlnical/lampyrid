@@ -127,7 +127,7 @@ function Planet:genSVG()
 
 	-- We're done here
 	self.filename = string.gsub(self.seed .. "_" .. self.name .. ".svg", "[%s']", "_"):lower()
-	self.filename = string.format("%s_%s.svg", self.seed, self.name):gsub("[%s']", "_"):lower()
+	self.filename = string.format("%s_%s.svg", self.seed, self.name:gsub("[%s']", "_"):lower())
 	love.filesystem.write(self.filename, self.svg)
 end
 
