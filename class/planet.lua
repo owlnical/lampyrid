@@ -157,8 +157,9 @@ function Planet:genSVG()
 	self.svg = self.svg:gsub('<rect x="%-5".->', mask)
 
 	-- We're done here
-	love.filesystem.write(self.seed .. ".svg", self.svg)
-	love.filesystem.write("latest.svg", self.svg)
+	self.filename = string.gsub(self.seed .. "_" .. self.name .. ".svg", "[%s']", "_"):lower()
+	self.filename = string.format("%s_%s.svg", self.seed, self.name):gsub("[%s']", "_"):lower()
+	love.filesystem.write(self.filename, self.svg)
 end
 
 -- Return random HSL from high/low base range
